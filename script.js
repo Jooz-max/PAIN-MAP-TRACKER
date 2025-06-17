@@ -1,18 +1,13 @@
 function showSection(id) {
-  const sections = ['painMap'];
-  sections.forEach(section => {
-    const el = document.getElementById(`${section}Section`);
-    if (el) el.style.display = (section === id) ? 'block' : 'none';
-  });
+  const sectionId = `${id}Section`;
+  const el = document.getElementById(sectionId);
+  if (el) el.style.display = 'block';
+
   document.getElementById("mainMenu").style.display = 'none';
 }
 
 function goHome() {
-  const sections = ['painMap'];
-  sections.forEach(section => {
-    const el = document.getElementById(`${section}Section`);
-    if (el) el.style.display = 'none';
-  });
+  document.getElementById("painMapSection").style.display = 'none';
   document.getElementById("mainMenu").style.display = 'block';
   document.getElementById("painInfo").classList.add('hidden');
 }
@@ -37,8 +32,13 @@ function showPainInfo(part) {
     }
   };
 
+  if (!info[part]) {
+    console.warn(`No info found for part: ${part}`);
+    return;
+  }
+
   document.getElementById("areaTitle").innerText = part;
   document.getElementById("reason").innerText = info[part].reason;
   document.getElementById("suggestion").innerText = info[part].suggestion;
   document.getElementById("painInfo").classList.remove('hidden');
-}￼Enter
+    }
