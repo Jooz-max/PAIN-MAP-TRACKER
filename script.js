@@ -1,48 +1,36 @@
-functifunction showBodyMap() {
+fufunction showPainMap() {
   document.getElementById("mainMenu").style.display = "none";
-  document.getElementById("bodyScreen").style.display = "block";
+  document.getElementById("painMapSection").style.display = "block";
 }
 
 function goHome() {
-  document.getElementById("bodyScreen").style.display = "none";
+  document.getElementById("painMapSection").style.display = "none";
   document.getElementById("mainMenu").style.display = "block";
-}
-
-function showPainInfo(part) {
-  const info = {
-    "Head": {
-      reason: "Common causes: headache, stress, dehydration.",
-      suggestion: "Rest, hydrate, and reduce screen time."
-    },
-    "Chest": {
-      reason: "Common causes: anxiety, muscle strain, or indigestion.",
-      suggestion: "Relax, breathe slowly, or seek medical help if sharp."
-    },
-    "Stomach": {
-      reason: "Common causes: indigestion, hunger, or cramps.",
-      suggestion: "Try a light meal, rest, or a warm drink."
-    },
-    "Legs": {
-      reason: "Common causes: fatigue, cramps, or poor circulation.",
-      suggestion: "Stretch, massage, or elevate your legs."
-    }
-  };
-
-  const area = info[part];
-  document.getElementById("areaTitle").innerText = part + " Pain";
-  document.getElementById("reason").innerText = area.reason;
-  document.getElementById("suggestion").innerText = area.suggestion;
-  document.getElementById("painInfo").style.display = "block";
-}
-
-function hidePainInfo() {
   document.getElementById("painInfo").style.display = "none";
 }
 
-function savePainLog() {
-  const logText = document.getElementById("areaTitle").innerText + ": " + document.getElementById("reason").innerText;
-  const listItem = document.createElement("li");
-  listItem.textContent = logText;
-  document.getElementById("logList").appendChild(listItem);
-  alert("Pain log saved.");
+function showPainInfo(part) {
+  const reasons = {
+    Head: {
+      reason: "Possible cause: Headache due to stress, dehydration, or tension.",
+      suggestion: "Try resting in a quiet room and drink water."
+    },
+    Chest: {
+      reason: "Possible cause: Chest pain from anxiety, heartburn, or strain.",
+      suggestion: "Take deep breaths or consult a doctor if severe."
+    },
+    Stomach: {
+      reason: "Possible cause: Indigestion, gas, or mild food poisoning.",
+      suggestion: "Drink warm water or eat light foods."
+    },
+    Legs: {
+      reason: "Possible cause: Fatigue, overuse, or poor circulation.",
+      suggestion: "Elevate legs and massage gently."
+    }
+  };
+
+  document.getElementById("areaTitle").innerText = part;
+  document.getElementById("reason").innerText = reasons[part].reason;
+  document.getElementById("suggestion").innerText = reasons[part].suggestion;
+  document.getElementById("painInfo").style.display = "block";
 }￼Enter
