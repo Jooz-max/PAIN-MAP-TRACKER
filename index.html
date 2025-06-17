@@ -1,20 +1,21 @@
 <!DOCT<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pain Map Tracker</title>
+  <title>Pain Tracker</title>
   <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
 
   <div id="mainMenu">
     <h1>🩺 Health Assistant</h1>
-    <button onclick="showPainMap()">Track Pain</button>
+    <button onclick="showSection('painMap')">Track Pain</button>
   </div>
 
-  <div id="painMapSection" style="display:none;">
+  <div id="painMapSection" class="hidden">
     <h2>Pain Map Tracker</h2>
+
     <div class="emoji-container">
       <div class="rotating">🧍</div>
     </div>
@@ -26,7 +27,7 @@
       <button onclick="showPainInfo('Legs')">🦵 Legs</button>
     </div>
 
-    <div id="painInfo" style="display:none;">
+    <div id="painInfo" class="hidden">
       <h3 id="areaTitle"></h3>
       <p id="reason"></p>
       <p id="suggestion"></p>
