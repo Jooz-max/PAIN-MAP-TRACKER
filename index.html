@@ -1,51 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pain Tracker</title>
-  <link rel="stylesheet" href="style.css"/>
-</head>
-<body>
-
-  <div id="mainMenu">
-    <h1>🩺 Health Assistant</h1>
-    <button onclick="showSection('painMap')">Track Pain</button>
-  </div>
-
-  <div id="painMapSection" class="hidden">
-    <h2>Pain Map Tracker</h2>
-
-    <div class="emoji-container">
-      <div class="rotating">🧍</div>
-    </div>
-
-   <div class="button-container">
-  <button onclick="showPainInfo('Head')">🧠 Head</button>
-  <button onclick="showPainInfo('Eyes')">👁️ Eyes</button>
-  <button onclick="showPainInfo('Ears')">👂 Ears</button>
-  <button onclick="showPainInfo('Neck')">🦴 Neck</button>
-  <button onclick="showPainInfo('Chest')">❤️ Chest</button>
-  <button onclick="showPainInfo('Heart')">💓 Heart</button>
-  <button onclick="showPainInfo('Respiratory')">🫁 Respiratory</button>
-  <button onclick="showPainInfo('Stomach')">🍽️ Stomach</button>
-  <button onclick="showPainInfo('Back')">🔙 Back</button>
-  <button onclick="showPainInfo('Hands')">🤲 Hands</button>
-  <button onclick="showPainInfo('Arms')">💪 Arms</button>
-  <button onclick="showPainInfo('Legs')">🦵 Legs</button>
-  <button onclick="showPainInfo('Feet')">🦶 Feet</button>
-  <button onclick="showPainInfo('Skin')">🧴 Skin</button>
-   </div>
-
-    <div id="painInfo" class="hidden info-box">
-  <h2 id="areaTitle"></h2>
-  <p id="reason"></p>
-  <p id="suggestion"></p>
-    </div>
-
-    <button onclick="goHome()">⬅️ Back</button>
-  </div>
-
-  <script src="script.js"></script>
-</body>
-    </html>
+<!DOCT<!DOCTYPE html>
+<html lang="en">  
+<head>  
+  <meta charset="UTF-8"/>  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>  
+  <title>Pain Tracker</title>  
+  <link rel="stylesheet" href="style.css"/>  
+</head>  
+<body>  
+  <div id="mainMenu">  
+    <h1>🩺 Health Assistant</h1>  
+    <button onclick="showSection('painMap')">Track Pain</button>  
+  </div>  
+  
+  <div id="painMapSection" class="hidden">  
+    <h2>Pain Map Tracker</h2>  
+    <div class="emoji-container">  
+      <div class="rotating">🧍</div>  
+    </div>  
+  
+    <div class="button-container">  
+      <button onclick="showPainInfo('Head')">🧠 Head</button>  
+      <button onclick="showPainInfo('Chest')">❤️ Chest</button>  
+      <button onclick="showPainInfo('Stomach')">🍽️ Stomach</button>  
+      <button onclick="showPainInfo('Legs')">🦵 Legs</button>  
+    </div>  
+  
+    <div id="painInfo" class="info-box hidden">  
+      <h3 id="areaTitle"></h3>  
+      <p id="reason"></p>  
+      <p id="suggestion"></p>  
+    </div>  
+  
+    <button onclick="goHome()">⬅️ Back</button>  
+  </div>  
+  
+  <script src="script.js"></script>  
+</body>  
+</html>￼Enter
