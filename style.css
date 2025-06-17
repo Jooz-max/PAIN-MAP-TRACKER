@@ -1,4 +1,4 @@
-bobody {
+body {
   font-family: Arial, sans-serif;
   text-align: center;
   background-color: #f0f8ff;
@@ -28,11 +28,11 @@ button:hover {
 .emoji-container {
   font-size: 100px;
   margin: 30px auto;
-  animation: rotate 5s ease-in-out infinite;
 }
 
 .rotating {
   display: inline-block;
+  animation: rotate 5s ease-in-out infinite;
 }
 
 @keyframes rotate {
@@ -46,4 +46,14 @@ button:hover {
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-}￼Enter
+  margin-bottom: 20px;
+}
+
+.info-box {
+  background-color: #fff;
+  padding: 15px;
+  margin: 20px auto;
+  border-radius: 10px;
+  max-width: 300px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
