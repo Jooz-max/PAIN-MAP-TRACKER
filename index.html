@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pain Map Tracker</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- Main Menu -->
+  <div id="mainMenu">
+    <h1>💊 Health Assistant</h1>
+    <button onclick="showPainMap()">🧍 Track Pain</button>
+  </div>
+
+  <!-- Pain Map Tracker -->
+  <div id="painMapScreen" style="display:none;">
+    <h1>🧍 Pain Map Tracker</h1>
+
+    <div id="bodyMap">
+      <button class="body-part" onclick="showPainInfo('Head')" style="top: 30px; left: 90px;">🧠</button>
+      <button class="body-part" onclick="showPainInfo('Chest')" style="top: 100px; left: 85px;">❤️</button>
+      <button class="body-part" onclick="showPainInfo('Stomach')" style="top: 160px; left: 90px;">🍽️</button>
+      <button class="body-part" onclick="showPainInfo('Legs')" style="top: 250px; left: 85px;">🦵</button>
+    </div>
+
+    <div id="painInfo" style="display:none;">
+      <h2 id="areaTitle"></h2>
+      <p id="reason"></p>
+      <p id="suggestion"></p>
+      <button onclick="savePainLog()">Save Log</button>
+      <button onclick="hidePainInfo()">Back</button>
+    </div>
+
+    <div id="logSection">
+      <h2>📋 Pain Logs</h2>
+      <ul id="logList"></ul>
+    </div>
+
+    <button onclick="goBackHome()">⬅️ Back to Menu</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>￼Enter
