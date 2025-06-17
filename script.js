@@ -16,86 +16,60 @@ function showPainInfo(part) {
   const info = {
     Head: {
       reason: "Possible cause: Headache due to tension or dehydration.",
-      suggestion: "Drink water and rest your eyes.",
-      severity: "mild"
+      suggestion: "Drink water and rest your eyes."
     },
     Eyes: {
       reason: "Possible cause: Eye strain or dryness.",
-      suggestion: "Rest your eyes, use eye drops if needed.",
-      severity: "mild"
+      suggestion: "Rest your eyes, use eye drops if needed."
     },
     Ears: {
       reason: "Possible cause: Ear infection or pressure buildup.",
-      suggestion: "Avoid loud noise and consult a doctor if pain persists.",
-      severity: "moderate"
+      suggestion: "Avoid loud noise and consult a doctor if pain persists."
     },
     Neck: {
       reason: "Possible cause: Muscle tension or poor posture.",
-      suggestion: "Apply a warm compress and stretch gently.",
-      severity: "moderate"
+      suggestion: "Apply a warm compress and stretch gently."
     },
     Chest: {
       reason: "Possible cause: Stress or heartburn.",
-      suggestion: "Try deep breathing. Seek help if severe.",
-      severity: "moderate"
+      suggestion: "Try deep breathing. Seek help if severe."
     },
     Heart: {
       reason: "Possible cause: Palpitations or high blood pressure.",
-      suggestion: "Rest and check your pulse. Seek medical help if it persists.",
-      severity: "severe"
+      suggestion: "Rest and check your pulse. Seek medical help if it persists."
     },
     Respiratory: {
       reason: "Possible cause: Breathing issues or congestion.",
-      suggestion: "Try deep breaths or steam inhalation. See a doctor if severe.",
-      severity: "severe"
+      suggestion: "Try deep breaths or steam inhalation. See a doctor if severe."
     },
     Stomach: {
       reason: "Possible cause: Indigestion or cramps.",
-      suggestion: "Avoid spicy food and drink water.",
-      severity: "moderate"
+      suggestion: "Avoid spicy food and drink water."
     },
     Back: {
       reason: "Possible cause: Muscle strain or poor posture.",
-      suggestion: "Rest and apply a warm compress.",
-      severity: "mild"
+      suggestion: "Rest and apply a warm compress."
     },
     Hands: {
       reason: "Possible cause: Joint strain or overuse.",
-      suggestion: "Rest hands, do gentle stretching.",
-      severity: "mild"
+      suggestion: "Rest hands, do gentle stretching."
     },
     Arms: {
       reason: "Possible cause: Muscle fatigue or tension.",
-      suggestion: "Massage and rest your arms.",
-      severity: "mild"
+      suggestion: "Massage and rest your arms."
     },
     Legs: {
       reason: "Possible cause: Strain or poor circulation.",
-      suggestion: "Elevate and massage gently.",
-      severity: "moderate"
+      suggestion: "Elevate and massage gently."
     },
     Feet: {
       reason: "Possible cause: Overuse or bad footwear.",
-      suggestion: "Soak in warm water and rest.",
-      severity: "mild"
+      suggestion: "Soak in warm water and rest."
     },
     Skin: {
       reason: "Possible cause: Allergic reaction or dryness.",
-      suggestion: "Apply lotion or an antihistamine cream.",
-      severity: "moderate"
+      suggestion: "Apply lotion or an antihistamine cream."
     }
-  };
-
-  const severityEmojis = {
-    mild: "🟢 Mild",
-    moderate: "🟡 Moderate",
-    severe: "🔴 Severe"
-  };
-
-  const severityColors = {
-    mild: "lightgreen",
-    moderate: "gold",
-    severe: "lightcoral"
   };
 
   if (!info[part]) {
@@ -106,13 +80,5 @@ function showPainInfo(part) {
   document.getElementById("areaTitle").innerText = part;
   document.getElementById("reason").innerText = info[part].reason;
   document.getElementById("suggestion").innerText = info[part].suggestion;
-
-  // Show severity emoji
-  document.getElementById("severity").innerText = severityEmojis[info[part].severity];
-
-  // Color the info box
-  const infoBox = document.getElementById("painInfo");
-  infoBox.classList.remove('hidden');
-  infoBox.style.border = `2px solid ${severityColors[info[part].severity]}`;
-  infoBox.style.backgroundColor = `${severityColors[info[part].severity]}33`; // Light tone
+  document.getElementById("painInfo").classList.remove('hidden');
       }
