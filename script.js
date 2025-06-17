@@ -1,14 +1,16 @@
-function showSection(id) {function showSection(id) {
+function showSection(id) {
+  const sectionId = `${id}Sefunction showSection(id) {
   const sectionId = `${id}Section`;
   const el = document.getElementById(sectionId);
-  if (el) el.style.display = 'block';
-
-  document.getElementById("mainMenu").style.display = 'none';
+  if (el) {
+    el.classList.remove('hidden');
+  }
+  document.getElementById("mainMenu").classList.add('hidden');
 }
 
 function goHome() {
-  document.getElementById("painMapSection").style.display = 'none';
-  document.getElementById("mainMenu").style.display = 'block';
+  document.getElementById("painMapSection").classList.add('hidden');
+  document.getElementById("mainMenu").classList.remove('hidden');
   document.getElementById("painInfo").classList.add('hidden');
 }
 
