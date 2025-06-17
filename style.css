@@ -16,8 +16,6 @@ button {
   border: none;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  width: 80%;
-  max-width: 300px;
 }
 
 button:hover {
@@ -28,17 +26,11 @@ button:hover {
   display: none;
 }
 
-.emoji-container {
-  font-size: 100px;
-  margin: 30px 0 20px;
-}
-
-.button-list {
+.button-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
   gap: 12px;
-  margin-bottom: 30px;
+  margin: 20px 0;
 }
 
 .info-box {
