@@ -1,11 +1,9 @@
-fufunction showSection(id) {
+function showSection(id) {
   const sections = ['painMap'];
-
   sections.forEach(section => {
     const el = document.getElementById(`${section}Section`);
     if (el) el.style.display = (section === id) ? 'block' : 'none';
   });
-
   document.getElementById("mainMenu").style.display = 'none';
 }
 
@@ -15,7 +13,6 @@ function goHome() {
     const el = document.getElementById(`${section}Section`);
     if (el) el.style.display = 'none';
   });
-
   document.getElementById("mainMenu").style.display = 'block';
   document.getElementById("painInfo").classList.add('hidden');
 }
