@@ -1,36 +1,37 @@
-function showPainMap() {
+functifunction showBodyMap() {
   document.getElementById("mainMenu").style.display = "none";
-  document.getElementById("painMapScreen").style.display = "block";
+  document.getElementById("bodyScreen").style.display = "block";
 }
 
-function goBackHome() {
-  document.getElementById("painMapScreen").style.display = "none";
+function goHome() {
+  document.getElementById("bodyScreen").style.display = "none";
   document.getElementById("mainMenu").style.display = "block";
 }
 
 function showPainInfo(part) {
-  const painReasons = {
-    Head: {
-      reason: "Possible causes: Stress, dehydration, or lack of sleep.",
-      suggestion: "Solution: Drink water, rest, and consider pain relief if needed."
+  const info = {
+    "Head": {
+      reason: "Common causes: headache, stress, dehydration.",
+      suggestion: "Rest, hydrate, and reduce screen time."
     },
-    Chest: {
-      reason: "Possible causes: Anxiety, indigestion, or muscle strain.",
-      suggestion: "Solution: Relax, breathe slowly, and avoid heavy meals."
+    "Chest": {
+      reason: "Common causes: anxiety, muscle strain, or indigestion.",
+      suggestion: "Relax, breathe slowly, or seek medical help if sharp."
     },
-    Stomach: {
-      reason: "Possible causes: Indigestion, food poisoning, or gas.",
-      suggestion: "Solution: Eat light, drink warm water, and rest."
+    "Stomach": {
+      reason: "Common causes: indigestion, hunger, or cramps.",
+      suggestion: "Try a light meal, rest, or a warm drink."
     },
-    Legs: {
-      reason: "Possible causes: Fatigue, strain, or circulation issues.",
-      suggestion: "Solution: Elevate legs, stretch, and rest well."
+    "Legs": {
+      reason: "Common causes: fatigue, cramps, or poor circulation.",
+      suggestion: "Stretch, massage, or elevate your legs."
     }
   };
 
+  const area = info[part];
   document.getElementById("areaTitle").innerText = part + " Pain";
-  document.getElementById("reason").innerText = painReasons[part].reason;
-  document.getElementById("suggestion").innerText = painReasons[part].suggestion;
+  document.getElementById("reason").innerText = area.reason;
+  document.getElementById("suggestion").innerText = area.suggestion;
   document.getElementById("painInfo").style.display = "block";
 }
 
@@ -39,13 +40,9 @@ function hidePainInfo() {
 }
 
 function savePainLog() {
-  const title = document.getElementById("areaTitle").innerText;
-  const reason = document.getElementById("reason").innerText;
-  const suggestion = document.getElementById("suggestion").innerText;
-
+  const logText = document.getElementById("areaTitle").innerText + ": " + document.getElementById("reason").innerText;
   const listItem = document.createElement("li");
-  listItem.textContent = `${title} - ${reason} | ${suggestion}`;
+  listItem.textContent = logText;
   document.getElementById("logList").appendChild(listItem);
-
-  hidePainInfo();
+  alert("Pain log saved.");
 }￼Enter
