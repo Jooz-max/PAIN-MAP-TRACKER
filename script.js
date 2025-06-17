@@ -1,4 +1,4 @@
-function showSection(id) {
+funcfunction showSection(id) {
   const sectionId = `${id}Section`;
   const el = document.getElementById(sectionId);
   if (el) el.style.display = 'block';
@@ -22,9 +22,21 @@ function showPainInfo(part) {
       reason: "Possible cause: Stress or heartburn.",
       suggestion: "Try deep breathing. Seek help if severe."
     },
+    Heart: {
+      reason: "Possible cause: Palpitations or high blood pressure.",
+      suggestion: "Rest and check your pulse. Seek medical help if it persists."
+    },
     Stomach: {
       reason: "Possible cause: Indigestion or cramps.",
       suggestion: "Avoid spicy food and drink water."
+    },
+    Respiratory: {
+      reason: "Possible cause: Breathing issues or congestion.",
+      suggestion: "Try deep breaths or steam inhalation. See a doctor if severe."
+    },
+    Hands: {
+      reason: "Possible cause: Joint strain or overuse.",
+      suggestion: "Rest hands, do gentle stretching."
     },
     Legs: {
       reason: "Possible cause: Strain or poor circulation.",
@@ -41,4 +53,4 @@ function showPainInfo(part) {
   document.getElementById("reason").innerText = info[part].reason;
   document.getElementById("suggestion").innerText = info[part].suggestion;
   document.getElementById("painInfo").classList.remove('hidden');
-    }
+}￼Enter
