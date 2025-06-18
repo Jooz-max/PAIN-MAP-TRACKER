@@ -3,23 +3,34 @@
 <head>
   <title>Clickable Body Image</title>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
     .body-image {
-      max-width: 100%;
+      width: 100%;
       height: auto;
       display: block;
+      max-height: 90vh;
+      object-fit: contain;
       margin: 0 auto;
     }
+
     .info-box {
       text-align: center;
       font-family: sans-serif;
-      margin-top: 20px;
+      margin-top: 10px;
       font-size: 18px;
-      min-height: 60px;
+      min-height: 50px;
     }
+
     .button-container {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
     }
+
     button {
       padding: 10px 20px;
       margin: 0 10px;
@@ -31,23 +42,34 @@
 <head>
   <title>Clickable Body Image</title>
   <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
     .body-image {
-      max-width: 100%;
+      width: 100%;
       height: auto;
       display: block;
+      max-height: 90vh;
+      object-fit: contain;
       margin: 0 auto;
     }
+
     .info-box {
       text-align: center;
       font-family: sans-serif;
-      margin-top: 20px;
+      margin-top: 10px;
       font-size: 18px;
-      min-height: 60px;
+      min-height: 50px;
     }
+
     .button-container {
       text-align: center;
-      margin-top: 20px;
+      margin-top: 10px;
     }
+
     button {
       padding: 10px 20px;
       margin: 0 10px;
@@ -59,6 +81,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
     button:hover {
       background-color: #45a049;
     }
@@ -86,11 +109,11 @@
 
   <!-- ✅ Buttons -->
   <div class="button-container">
-    <button onclick="saveEntry()">Save Entry💾</button>
-    <button onclick="goBack()">⬅️Back to Menu</button>
+    <button onclick="saveEntry()">Save Entry 💾</button>
+    <button onclick="goBack()">⬅️ Back to Menu</button>
   </div>
 
-  <!-- ✅ Script for showing info and buttons -->
+  <!-- ✅ Script -->
   <script>
     let currentPart = null;
     let currentInfo = '';
@@ -126,7 +149,6 @@
       currentPart = null;
       currentInfo = '';
       document.getElementById("infoBox").textContent = "Tap a body part";
-      // You can add logic here to show main menu or navigate elsewhere
       alert("Back to menu (functionality to implement)");
     }
   </script>
@@ -137,6 +159,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
+
     button:hover {
       background-color: #45a049;
     }
@@ -157,17 +180,18 @@
     <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
     <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
     <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
-  </map>
-- ✅ Message area -->
+p>
+
+  <!-- ✅ Message area -->
   <div class="info-box" id="infoBox">Tap a body part</div>
 
   <!-- ✅ Buttons -->
   <div class="button-container">
-    <button onclick="saveEntry()">Save Entry</button>
-    <button onclick="goBack()">Back to Menu</button>
+    <button onclick="saveEntry()">Save Entry 💾</button>
+    <button onclick="goBack()">⬅️ Back to Menu</button>
   </div>
 
-  <!-- ✅ Script for showing info and buttons -->
+  <!-- ✅ Script -->
   <script>
     let currentPart = null;
     let currentInfo = '';
@@ -182,4 +206,3 @@
         "Left Leg": "Left leg pain or cramps?",
         "Right Leg": "Right leg discomfort?",
         "Reproductive": "Any unusual pain or concerns there?"
-      };
