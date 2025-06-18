@@ -1,7 +1,7 @@
 function goTo(gender) {
   if (gender === 'boy') {
-    window.location.href = "boy.html";
+    showMale();
   } else if (gender === 'girl') {
-    window.location.href = "girl.html";
+    showFemale();
   }
 }
