@@ -1,98 +1,13 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html>
 <head>
-  <title>Clickable Body Image</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
-    .body-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 90vh;
-      object-fit: contain;
-      margin: 0 auto;
-    }
-
-    .info-box {
-      text-align: center;
-      font-family: sans-serif;
-      margin-top: 10px;
-      font-size: 18px;
-      min-height: 50px;
-    }
-
-    .button-container {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Clickable Body Image</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
-
-    .body-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      max-height: 90vh;
-      object-fit: contain;
-      margin: 0 auto;
-    }
-
-    .info-box {
-      text-align: center;
-      font-family: sans-serif;
-      margin-top: 10px;
-      font-size: 18px;
-      min-height: 50px;
-    }
-
-    .button-container {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    button {
-      padding: 10px 20px;
-      margin: 0 10px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+  <title>Body Pain Map</title>
+  <link rel="stylesheet" href="boy.css">
 </head>
 <body>
 
-  <!-- ✅ Body image -->
   <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
 
-  <!-- ✅ Clickable areas -->
   <map name="bodymap">
     <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
     <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
@@ -104,105 +19,13 @@
     <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
   </map>
 
-  <!-- ✅ Message area -->
   <div class="info-box" id="infoBox">Tap a body part</div>
 
-  <!-- ✅ Buttons -->
   <div class="button-container">
     <button onclick="saveEntry()">Save Entry 💾</button>
     <button onclick="goBack()">⬅️ Back to Menu</button>
   </div>
 
-  <!-- ✅ Script -->
-  <script>
-    let currentPart = null;
-    let currentInfo = '';
-
-    function showInfo(part) {
-      const info = {
-        "Head": "Headache? Dizzy? Any head-related issues?",
-        "Neck": "Neck pain or stiffness?",
-        "Torso": "Any chest or stomach discomfort?",
-        "Left Arm": "Pain or weakness in your left arm?",
-        "Right Arm": "Pain or numbness in your right arm?",
-        "Left Leg": "Left leg pain or cramps?",
-        "Right Leg": "Right leg discomfort?",
-        "Reproductive": "Any unusual pain or concerns there?"
-      };
-      currentPart = part;
-      currentInfo = info[part] || "Tapped an unknown area.";
-      document.getElementById("infoBox").textContent = currentInfo;
-    }
-
-    function saveEntry() {
-      if (!currentPart) {
-        alert("Please tap a body part first!");
-        return;
-      }
-      const entries = JSON.parse(localStorage.getItem('painEntries') || '[]');
-      entries.push({ part: currentPart, info: currentInfo, date: new Date().toISOString() });
-      localStorage.setItem('painEntries', JSON.stringify(entries));
-      alert(`Saved entry for ${currentPart}`);
-    }
-
-    function goBack() {
-      currentPart = null;
-      currentInfo = '';
-      document.getElementById("infoBox").textContent = "Tap a body part";
-      alert("Back to menu (functionality to implement)");
-    }
-  </script>
-
+  <script src="boy.js"></script>
 </body>
-</html>￼Enter      background-color: #4CAF50;
-      color: white;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- ✅ Body image -->
-  <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
-
-  <!-- ✅ Clickable areas -->
-  <map name="bodymap">
-    <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
-    <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
-    <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
-    <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
-    <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
-    <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
-    <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
-    <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
-p>
-
-  <!-- ✅ Message area -->
-  <div class="info-box" id="infoBox">Tap a body part</div>
-
-  <!-- ✅ Buttons -->
-  <div class="button-container">
-    <button onclick="saveEntry()">Save Entry 💾</button>
-    <button onclick="goBack()">⬅️ Back to Menu</button>
-  </div>
-
-  <!-- ✅ Script -->
-  <script>
-    let currentPart = null;
-    let currentInfo = '';
-
-    function showInfo(part) {
-      const info = {
-        "Head": "Headache? Dizzy? Any head-related issues?",
-        "Neck": "Neck pain or stiffness?",
-        "Torso": "Any chest or stomach discomfort?",
-        "Left Arm": "Pain or weakness in your left arm?",
-        "Right Arm": "Pain or numbness in your right arm?",
-        "Left Leg": "Left leg pain or cramps?",
-        "Right Leg": "Right leg discomfort?",
-        "Reproductive": "Any unusual pain or concerns there?"
+</html>￼Enter
