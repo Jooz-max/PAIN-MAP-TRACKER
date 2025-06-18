@@ -9,21 +9,21 @@
   <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
 
   <map name="bodymap">
-    <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
-    <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
-    <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
-    <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
-    <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
-    <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
-    <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
-    <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
+    <area shape="rect" coords="80,40,140,100" alt="Head" href="#" data-part="Head">
+    <area shape="rect" coords="100,100,130,130" alt="Neck" href="#" data-part="Neck">
+    <area shape="rect" coords="80,130,150,200" alt="Torso" href="#" data-part="Torso">
+    <area shape="rect" coords="50,130,80,200" alt="Left Arm" href="#" data-part="Left Arm">
+    <area shape="rect" coords="150,130,180,200" alt="Right Arm" href="#" data-part="Right Arm">
+    <area shape="rect" coords="80,200,110,300" alt="Left Leg" href="#" data-part="Left Leg">
+    <area shape="rect" coords="120,200,150,300" alt="Right Leg" href="#" data-part="Right Leg">
+    <area shape="rect" coords="100,180,130,200" alt="Reproductive" href="#" data-part="Reproductive">
   </map>
 
   <div class="info-box" id="infoBox">Tap a body part</div>
 
   <div class="button-container">
-    <button onclick="saveEntry()">Save Entry 💾</button>
-    <button onclick="goBack()">⬅️ Back to Menu</button>
+    <button id="saveBtn">Save Entry 💾</button>
+    <button id="backBtn">⬅️ Back to Menu</button>
   </div>
 
   <script src="boy.js"></script>
