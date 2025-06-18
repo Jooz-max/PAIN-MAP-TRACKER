@@ -1,36 +1,153 @@
-<!DOCT<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Body Pain Map</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Body Check</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .body-image {
+      height: 90vh;
+      width: auto;
+      max-width: 100%;
+      pointer-events: none;
+    }
+
+    .part-buttons,
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 20px;
+      z-index: 10;
+    }
+
+    .part-buttons button,
+    .button-container button {
+      padding: 14px 24px;
+      margin: 8px;
+      font-size: 18px;
+      border: none;
+      border-radius: 6px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .part-buttons button:hover,
+    .button-container button:hover {
+      background-color: #0056b3;
+    }
+
+    .info-box {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 10px;
+      border-radius: 6px;
+      background-color: #ffffff;
+      max-width: 90%;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
+  <div class="main-wrapper">
+    <img src="body.png" alt="Body Diagram" class="body-image">
 
-  <div class="container">
-    <img src="boy.png" class="body-image" alt="Boy Body">
+    <div class="part-buttons">
+      <button onclick="showInfo('Head')">Head</button>
+      <button onclick="showInfo('Neck')">Neck</button>
+      <button onclick="showInfo('Torso')">Torso</button>
+      <button onclick="showInfo('Left Arm')">Left Arm</button>
+      <button onclick="showInfo('Right Arm')">Right Arm</button>
+      <button onclick="showInfo('Left Leg')">Left Leg</button>
+      <button onclick="showInfo('Right Leg')">Right Leg</button>
+      <button onclick="showInfo('Reproductive')">Reproductive Area</button>
+    </div>
+
+    <div id="infoBox" class="info-box"></div>
+
+    <div class="button-container">
+      <button onclick="saveEntry()">Save Entry</button>
+      <button onclick="history.back()">Back</button>
+    </div>
   </div>
 
-  <div class="part-buttons">
-    <button onclick="showInfo('Head')">Head</button>
-    <button onclick="showInfo('Neck')">Neck</button>
-    <button onclick="showInfo('Torso')">Torso</button>
-    <button onclick="showInfo('Left Arm')">Left Arm</button>
-    <button onclick="showInfo('Right Arm')">Right Arm</button>
-    <button onclick="showInfo('Left Leg')">Left Leg</button>
-    <button onclick="showInfo('Right Leg')">Right Leg</button>
-    <button onclick="showInfo('Reproductive')">Reproductive</button>
-  </div>
+  <script>
+    function showInfo(part) {
+      const infoBox = document.getElementById("infoBox");
+      let problem = "";
+      let suggestion = "";
+      let color = "";
 
-  <div class="info-box" id="infoBox">
-    Select a body part to view possible issues.
-  </div>
+      switch(part) {
+        case "Head":
+          problem = "Persistent headache or pressure";
+          suggestion = "Ensure hydration, take a short rest, and limit screen time. If it persists, consider seeing a healthcare provider.";
+          color = "#f44336";
+          break;
+        case "Neck":
+          problem = "Neck stiffness or discomfort";
+          suggestion = "Try slow neck rotations, apply warm compress, and maintain good posture while sitting.";
+          color = "#ff9800";
+          break;
+        case "Torso":
+          problem = "Chest pain or tightness";
+          suggestion = "Rest immediately. If pain lasts or spreads, seek urgent medical attention.";
+          color = "#e91e63";
+          break;
+        case "Left Arm":
+        case "Right Arm":
+          problem = "Arm fatigue or pain";
+          suggestion = "Stretch the arm gently, avoid repetitive strain, and rest if swelling or pain increases.";
+          color = "#ffc107";
+          break;
+        case "Left Leg":
+        case "Right Leg":
+          problem = "Soreness or heaviness in the leg";
+          suggestion = "Elevate the leg, massage gently, and check for bruising or strain after walking or activity.";
+          color = "#4caf50";
+          break;
+        case "Reproductive":
+          problem = "Unusual pain or discomfort";
+          suggestion = "Consult a health professional, especially if symptoms are persistent or accompanied by other signs.";
+          color = "#9c27b0";
+          break;
+        default:
+          problem = "Unknown area";
+          suggestion = "";
+          color = "#607d8b";
+      }
 
-  <div class="button-container">
-    <button onclick="saveEntry()">Save Entry 💾</button>
-    <a href="index.html"><button>⬅️ Back to Menu</button></a>
-  </div>
+      infoBox.style.backgroundColor = color;
+      infoBox.textContent = `${part}: ${problem} — ${suggestion}`;
+    }
 
-  <script src="script.js"></script>
+    function saveEntry() {
+      alert("Entry saved successfully!");
+      // Future: store data here
+    }
+  </script>
 </body>
-</html>￼Enter
+        </html>
