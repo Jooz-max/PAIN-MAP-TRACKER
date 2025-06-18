@@ -1,5 +1,22 @@
+console.log("boy.js loaded ✅");
+
 let currentPart = null;
 let currentInfo = '';
+
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM Ready ✅");
+
+  document.querySelectorAll("area").forEach(area => {
+    area.addEventListener("click", e => {
+      e.preventDefault();
+      const part = area.dataset.part;
+      showInfo(part);
+    });
+  });
+
+  document.getElementById("saveBtn").addEventListener("click", saveEntry);
+  document.getElementById("backBtn").addEventListener("click", goBack);
+});
 
 function showInfo(part) {
   const info = {
@@ -32,5 +49,5 @@ function goBack() {
   currentPart = null;
   currentInfo = '';
   document.getElementById("infoBox").textContent = "Tap a body part";
-  alert("Back to menu (functionality to implement)");
-}￼Enter
+  alert("Back to menu (you can link this to your homepage)");
+                                            }
