@@ -2,86 +2,32 @@
 <html>
 <head>
   <title>Body Pain Map</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: sans-serif;
-      background-color: #f0f0f0;
-      text-align: center;
-    }
-
-    .container {
-      position: relative;
-      display: inline-block;
-      height: 90vh;
-    }
-
-    .body-image {
-      height: 90vh;
-      width: auto;
-    }
-
-    .marker {
-      position: absolute;
-      font-size: 20px;
-      pointer-events: none;
-    }
-
-    .info-box {
-      margin-top: 10px;
-      font-weight: bold;
-    }
-
-    .button-container {
-      margin-top: 10px;
-    }
-
-    button {
-      padding: 8px 12px;
-      margin: 5px;
-      font-size: 16px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <div class="container">
-    <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
-
-    <!-- Color markers showing coordinate regions -->
-    <div class="marker" style="top:40px; left:80px;">🔴</div>   <!-- Head -->
-    <div class="marker" style="top:100px; left:100px;">🔵</div> <!-- Neck -->
-    <div class="marker" style="top:140px; left:90px;">🟢</div>  <!-- Torso -->
-    <div class="marker" style="top:140px; left:45px;">🟡</div>  <!-- Left Arm -->
-    <div class="marker" style="top:140px; left:155px;">🟣</div> <!-- Right Arm -->
-    <div class="marker" style="top:230px; left:80px;">🟠</div>  <!-- Left Leg -->
-    <div class="marker" style="top:230px; left:120px;">🟤</div> <!-- Right Leg -->
-    <div class="marker" style="top:190px; left:100px;">⚫</div> <!-- Reproductive -->
+    <img src="boy.png" class="body-image" alt="Boy Body">
   </div>
 
-  <map name="bodymap">
-    <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
-    <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
-    <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
-    <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
-    <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
-    <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
-    <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
-    <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
-  </map>
+  <div class="part-buttons">
+    <button onclick="showInfo('Head')">Head</button>
+    <button onclick="showInfo('Neck')">Neck</button>
+    <button onclick="showInfo('Torso')">Torso</button>
+    <button onclick="showInfo('Left Arm')">Left Arm</button>
+    <button onclick="showInfo('Right Arm')">Right Arm</button>
+    <button onclick="showInfo('Left Leg')">Left Leg</button>
+    <button onclick="showInfo('Right Leg')">Right Leg</button>
+    <button onclick="showInfo('Reproductive')">Reproductive</button>
+  </div>
 
-  <div class="info-box" id="infoBox">Tap a body part</div>
+  <div class="info-box" id="infoBox">Select a body part to view possible issues.</div>
 
   <div class="button-container">
     <button onclick="saveEntry()">Save Entry 💾</button>
     <a href="index.html"><button>⬅️ Back to Menu</button></a>
   </div>
 
-  <script src="boy.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>￼Enter
