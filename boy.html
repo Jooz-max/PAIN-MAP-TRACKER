@@ -1,4 +1,4 @@
-<!DOCTYP<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <title>Health Assistant - Boys</title>
@@ -10,14 +10,83 @@
       display: block;
       margin: 0 auto;
     }
-    .info-box {
+
+    .info-box, .log-box {
       text-align: center;
       font-family: sans-serif;
-      margin-top: 20px;
+      margin: 15px auto;
       padding: 10px;
       border: 1px solid #ccc;
       border-radius: 10px;
       background-color: #f8f8f8;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .btn {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="box">
+
+    <!-- BODY IMAGE WITH MAPPING -->
+    <div class="body-container">
+      <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
+      <map name="bodymap">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Assistant - Boys</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .body-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .info-box, .log-box {
+      text-align: center;
+      font-family: sans-serif;
+      margin: 15px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f8f8f8;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .btn {
+      display: block;
+      margin: 10px auto;
+      padding: 10px 20px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
@@ -42,53 +111,120 @@
 
     <!-- DYNAMIC INFO OUTPUT -->
     <div class="info-box" id="infoBox">
-      <h3>Click a body part to track pain.</h3>
+      <h3>Tap a body part to track pain.</h3>
+    </div>
+
+    <!-- SAVE ENTRY BUTTON -->
+    <button class="btn" onclick="saveEntry()">💾 Save Entry</button>
+
+    <!-- LOG BOX -->
+    <div class="log-box" id="logBox">
+      <strong>Saved Entries:</strong>
+      <ul id="logList"></ul>
     </div>
 
     <!-- BACK BUTTON -->
-    <div style="margin-top: 15px; text-align: center;">
-      <button class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
-    </div>
+    <button class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
   </div>
 
   <script>
+    let currentMessage = "";
+
     function showInfo(part) {
       const infoBox = document.getElementById("infoBox");
 
-      let message = "";
-
       switch (part) {
         case "Head":
-          message = "Headache? Dizziness? Any discomfort in your head?";
+          currentMessage = "Headache? Dizziness? Any discomfort in your head?";
           break;
         case "Neck":
-          message = "Neck pain or stiffness? Could be posture-related.";
+          currentMessage = "Neck pain or stiffness? Could be posture-related.";
           break;
         case "Torso":
-          message = "Any chest or stomach discomfort?";
+          currentMessage = "Any chest or stomach discomfort?";
           break;
         case "Left Arm":
-          message = "Pain or weakness in the left arm?";
+          currentMessage = "Pain or weakness in the left arm?";
           break;
         case "Right Arm":
-          message = "Pain or numbness in the right arm?";
+          currentMessage = "Pain or numbness in the right arm?";
           break;
         case "Left Leg":
-          message = "Left leg pain, cramps, or injuries?";
+          currentMessage = "Left leg pain, cramps, or injuries?";
           break;
         case "Right Leg":
-          message = "Any issues with the right leg?";
+          currentMessage = "Any issues with the right leg?";
           break;
         case "Reproductive":
-          message = "Are you experiencing any unusual pain or concerns?";
+          currentMessage = "Are you experiencing any unusual pain or concerns?";
           break;
         default:
-          message = "Click a body part to track pain.";
+          currentMessage = "Tap a body part to track pain.";
       }
 
-      infoBox.innerHTML = `<h3>${message}</h3>`;
+      infoBox.innerHTML = `<h3>${currentMessage}</h3>`;
+    }
+
+    function saveEntry() {
+      if (!currentMessage) return;
+
+      const logList = document.getElementById("logList");
+      const li = document.createElement("li");
+      li.textContent = currentMessage;
+      logList.appendChild(li);
     }
   </script>
 
 </body>
-</html>￼Enter
+</html>￼Enter        <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
+        <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
+        <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
+        <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
+        <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
+        <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
+        <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
+        <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
+      </map>
+    </div>
+
+    <!-- DYNAMIC INFO OUTPUT -->
+    <div class="info-box" id="infoBox">
+      <h3>Tap a body part to track pain.</h3>
+    </div>
+
+    <!-- SAVE ENTRY BUTTON -->
+    <button class="btn" onclick="saveEntry()">💾 Save Entry</button>
+
+    <!-- LOG BOX -->
+    <div class="log-box" id="logBox">
+      <strong>Saved Entries:</strong>
+      <ul id="logList"></ul>
+    </div>
+
+    <!-- BACK BUTTON -->
+utton class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
+  </div>
+
+  <script>
+    let currentMessage = "";
+
+    function showInfo(part) {
+      const infoBox = document.getElementById("infoBox");
+
+      switch (part) {
+        case "Head":
+          currentMessage = "Headache? Dizziness? Any discomfort in your head?";
+          break;
+        case "Neck":
+          currentMessage = "Neck pain or stiffness? Could be posture-related.";
+          break;
+        case "Torso":
+          currentMessage = "Any chest or stomach discomfort?";
+          break;
+        case "Left Arm":
+          currentMessage = "Pain or weakness in the left arm?";
+          break;
+        case "Right Arm":
+          currentMessage = "Pain or numbness in the right arm?";
+          break;
+        case "Left Leg":
