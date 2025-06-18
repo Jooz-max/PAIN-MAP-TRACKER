@@ -1,23 +1,37 @@
-<!DOCT<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html>
 <head>
   <title>Body Pain Map</title>
   <style>
-    .marker {
-      position: absolute;
-      font-size: 20px;
-      pointer-events: none;
-    }
     .container {
       position: relative;
-      display: inline-block;
+      display: block;
+      width: 100%;
+      max-width: 400px; /* Adjust for scaling */
+      margin: 0 auto;
     }
+
+    .body-image {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .marker {
+      position: absolute;
+      font-size: 18px;
+      pointer-events: none;
+    }
+
     .info-box {
       margin-top: 10px;
       font-weight: bold;
+      text-align: center;
     }
+
     .button-container {
       margin-top: 10px;
+      text-align: center;
     }
   </style>
 </head>
@@ -26,15 +40,15 @@
   <div class="container">
     <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
 
-    <!-- Markers to visualize coordinate regions -->
+    <!-- Markers: Aligned to match rect coordinates (adjusted visually) -->
     <div class="marker" style="top:40px; left:80px;">🔴</div> <!-- Head -->
     <div class="marker" style="top:100px; left:100px;">🔵</div> <!-- Neck -->
-    <div class="marker" style="top:130px; left:80px;">🟢</div> <!-- Torso -->
-    <div class="marker" style="top:130px; left:50px;">🟡</div> <!-- Left Arm -->
-    <div class="marker" style="top:130px; left:150px;">🟣</div> <!-- Right Arm -->
-    <div class="marker" style="top:200px; left:80px;">🟠</div> <!-- Left Leg -->
-    <div class="marker" style="top:200px; left:120px;">🟤</div> <!-- Right Leg -->
-    <div class="marker" style="top:180px; left:100px;">⚫</div> <!-- Reproductive -->
+    <div class="marker" style="top:140px; left:90px;">🟢</div> <!-- Torso -->
+    <div class="marker" style="top:140px; left:45px;">🟡</div> <!-- Left Arm -->
+    <div class="marker" style="top:140px; left:155px;">🟣</div> <!-- Right Arm -->
+    <div class="marker" style="top:230px; left:80px;">🟠</div> <!-- Left Leg -->
+    <div class="marker" style="top:230px; left:120px;">🟤</div> <!-- Right Leg -->
+    <div class="marker" style="top:190px; left:100px;">⚫</div> <!-- Reproductive -->
   </div>
 
   <map name="bodymap">
