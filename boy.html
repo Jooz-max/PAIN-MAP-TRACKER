@@ -64,7 +64,7 @@
 
     .info-box {
       position: absolute;
-      bottom: 110px;
+      bottom: 160px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3;
@@ -104,8 +104,66 @@
     .button-container button:hover {
       background-color: #1e7e34;
     }
+
+    .voice-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 16px 24px;
+      font-size: 20px;
+      background-color: #673ab7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .voice-button:hover {
+      background-color: #512da8;
+    }
   </style>
 </head>
+<body>
+  <div class="main-wrapper">
+    <img src="boy.png" alt="Body Diagram" class="body-image">
+
+    <div class="part-buttons">
+      <button onclick="showInfo('Head')">Head</button>
+      <button onclick="showInfo('Neck')">Neck</button>
+      <button onclick="showInfo('Torso')">Respiratory</button>
+      <button onclick="showInfo('Left Arm')">Left Arm</button>
+      <button onclick="showInfo('Right Arm')">Right Arm</button>
+      <button onclick="showInfo('Left Leg')">Left Leg</button>
+      <button onclick="showInfo('Right Leg')">Right Leg</button>
+      <button onclick="showInfo('Reproductive')">Reproductive Area</button>
+    </div>
+
+    <div id="infoBox" class="info-box"></div>
+
+    <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
+
+    <div class="button-container">
+      <button onclick="saveEntry()">Save Entry</button>
+      <button onclick="history.back()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    function speak(text) {
+      const message = new SpeechSynthesisUtterance(text);
+      message.rate = 1;
+      message.pitch = 1;
+      message.lang = 'en-US';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(message);
+    }
+
+    function showInfo(part) {
+      const infoBox = document.getElementById("infoBox");
+      let problem = "";
+      let suggestion = "";
+      let color = "";
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -172,7 +230,7 @@
 
     .info-box {
       position: absolute;
-      bottom: 110px;
+      bottom: 160px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 3;
@@ -212,6 +270,24 @@
     .button-container button:hover {
       background-color: #1e7e34;
     }
+
+    .voice-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 16px 24px;
+      font-size: 20px;
+      background-color: #673ab7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .voice-button:hover {
+      background-color: #512da8;
+    }
   </style>
 </head>
 <body>
@@ -231,6 +307,8 @@
 
     <div id="infoBox" class="info-box"></div>
 
+    <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
+
     <div class="button-container">
       <button onclick="saveEntry()">Save Entry</button>
       <button onclick="history.back()">Back</button>
@@ -238,41 +316,52 @@
   </div>
 
   <script>
+    function speak(text) {
+      const message = new SpeechSynthesisUtterance(text);
+      message.rate = 1;
+      message.pitch = 1;
+      message.lang = 'en-US';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(message);
+    }
+
     function showInfo(part) {
       const infoBox = document.getElementById("infoBox");
       let problem = "";
       let suggestion = "";
       let color = "";
 
-      switch(part) {
-        case "Head":
+      switch(part.toLowerCase()) {
+        case "head":
           problem = "Persistent headache or pressure";
           suggestion = "Stay hydrated, rest, and reduce screen time.";
           color = "#f44336";
           break;
-        case "Neck":
+        case "neck":
           problem = "Neck stiffness or discomfort";
           suggestion = "Do neck stretches, apply heat, maintain posture.";
           color = "#ff9800";
           break;
-        case "Torso":
+        case "torso":
+        case "respiratory":
           problem = "Respiratory issues like asthma or shortness of breath.";
           suggestion = "Avoid allergens, do breathing exercises, and consult a doctor.";
           color = "#03a9f4";
           break;
-        case "Left Arm":
-        case "Right Arm":
+        case "left arm":
+        case "right arm":
           problem = "Arm fatigue or pain";
           suggestion = "Stretch, avoid heavy strain, rest if sore.";
           color = "#ffc107";
           break;
-        case "Left Leg":
-        case "Right Leg":
+        case "left leg":
+        case "right leg":
           problem = "Leg soreness or heaviness";
           suggestion = "Elevate, gently massage, rest after walking.";
           color = "#4caf50";
           break;
-        case "Reproductive":
+        case "reproductive":
+        case "reproductive area":
           problem = "Pain or discomfort in male reproductive area.";
           suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
           color = "#9c27b0";
@@ -283,64 +372,91 @@
           color = "#607d8b";
       }
 
+      const message = `${part}: ${problem}. ${suggestion}`;
       infoBox.style.backgroundColor = color;
-      infoBox.textContent = `${part}: ${problem} — ${suggestion}`;
+      infoBox.textContent = message;
+      speak(message);
     }
 
     function saveEntry() {
       alert("Entry saved successfully!");
     }
+
+    function startVoice() {
+      speak("A healthy you is a powerful you. Let's track how you feel.");
+
+      if (!('webkitSpeechRecognition' in window)) {
+        alert("Your browser doesn't support speech recognition.");
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = function(event) {
+        const transcript = event.results[0][0].transcript;
+        showInfo(transcript);
+      };
+
+      recognition.onerror = function(event) {
+        speak("Sorry, I didn't catch that. Please try again.");
+      };
+
+      recognition.start();
+    }
   </script>
 </body>
-</html>￼Enter<body>
-  <div class="main-wrapper">
-    <img src="boy.png" alt="Body Diagram" class="body-image">
-
-    <div class="part-buttons">
-      <button onclick="showInfo('Head')">Head</button>
-      <button onclick="showInfo('Neck')">Neck</button>
-      <button onclick="showInfo('Torso')">Respiratory</button>
-      <button onclick="showInfo('Left Arm')">Left Arm</button>
-      <button onclick="showInfo('Right Arm')">Right Arm</button>
-      <button onclick="showInfo('Left Leg')">Left Leg</button>
-      <button onclick="showInfo('Right Leg')">Right Leg</button>
-      <button onclick="showInfo('Reproductive')">Reproductive Area</button>
-    </div>
-
-    <div id="infoBox" class="info-box"></div>
-
-    <div class="button-container">
-      <button onclick="saveEntry()">Save Entry</button>
-      <button onclick="history.back()">Back</button>
-    </div>
-  </div>
-
-  <script>
-    function showInfo(part) {
-      const infoBox = document.getElementById("infoBox");
-let problem = "";
-      let suggestion = "";
-      let color = "";
-
-      switch(part) {
-        case "Head":
+</html>￼Enter
+      switch(part.toLowerCase()) {
+        case "head":
           problem = "Persistent headache or pressure";
           suggestion = "Stay hydrated, rest, and reduce screen time.";
           color = "#f44336";
           break;
-        case "Neck":
+        case "neck":
           problem = "Neck stiffness or discomfort";
           suggestion = "Do neck stretches, apply heat, maintain posture.";
           color = "#ff9800";
           break;
-        case "Torso":
+        case "torso":
+        case "respiratory":
           problem = "Respiratory issues like asthma or shortness of breath.";
           suggestion = "Avoid allergens, do breathing exercises, and consult a doctor.";
           color = "#03a9f4";
           break;
-        case "Left Arm":
-        case "Right Arm":
+        case "left arm":
+        case "right arm":
           problem = "Arm fatigue or pain";
           suggestion = "Stretch, avoid heavy strain, rest if sore.";
           color = "#ffc107";
           break;
+        case "left leg":
+        case "right leg":
+    problem = "Leg soreness or heaviness";
+          suggestion = "Elevate, gently massage, rest after walking.";
+          color = "#4caf50";
+          break;
+        case "reproductive":
+        case "reproductive area":
+          problem = "Pain or discomfort in male reproductive area.";
+          suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
+          color = "#9c27b0";
+          break;
+        default:
+          problem = "Unknown area selected.";
+          suggestion = "";
+          color = "#607d8b";
+      }
+
+      const message = `${part}: ${problem}. ${suggestion}`;
+      infoBox.style.backgroundColor = color;
+      infoBox.textContent = message;
+      speak(message);
+    }
+
+    function saveEntry() {
+      alert("Entry saved successfully!");
+    }
+
