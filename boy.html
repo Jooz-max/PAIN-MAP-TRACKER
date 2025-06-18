@@ -4,12 +4,7 @@
   <meta charset="UTF-8">
   <title>Body Check</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
       background-color: #f0f0f0;
@@ -17,13 +12,11 @@
       overflow: hidden;
       position: relative;
     }
-
     .main-wrapper {
       position: relative;
       width: 100%;
       height: 100%;
     }
-
     .body-image {
       position: absolute;
       top: 0;
@@ -34,7 +27,6 @@
       z-index: 1;
       pointer-events: none;
     }
-
     .part-buttons {
       position: absolute;
       top: 60%;
@@ -46,7 +38,6 @@
       width: 95%;
       z-index: 2;
     }
-
     .part-buttons button {
       padding: 26px 40px;
       margin: 12px;
@@ -57,11 +48,9 @@
       color: white;
       cursor: pointer;
     }
-
     .part-buttons button:hover {
       background-color: #0056b3;
     }
-
     .info-box {
       position: absolute;
       bottom: 160px;
@@ -78,7 +67,6 @@
       width: 95%;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
     .button-container {
       position: absolute;
       bottom: 20px;
@@ -88,7 +76,6 @@
       display: flex;
       gap: 20px;
     }
-
     .button-container button {
       padding: 24px 60px;
       font-size: 24px;
@@ -100,11 +87,9 @@
       cursor: pointer;
       min-width: 160px;
     }
-
     .button-container button:hover {
       background-color: #1e7e34;
     }
-
     .voice-button {
       position: absolute;
       top: 20px;
@@ -118,7 +103,6 @@
       border-radius: 8px;
       cursor: pointer;
     }
-
     .voice-button:hover {
       background-color: #512da8;
     }
@@ -213,7 +197,38 @@
     }
 
     function startVoice() {
-      alert("Voice input not implemented yet.");
+      if (!('webkitSpeechRecognition' in window)) {
+        alert("Sorry, your browser doesn't support voice recognition.");
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const spoken = event.results[0][0].transcript.toLowerCase();
+        console.log("Voice Input:", spoken);
+
+        // Match spoken input to button options
+        if (spoken.includes("head")) showInfo("Head");
+        else if (spoken.includes("neck")) showInfo("Neck");
+        else if (spoken.includes("torso") || spoken.includes("chest") || spoken.includes("respiratory")) showInfo("Torso");
+        else if (spoken.includes("left arm")) showInfo("Left Arm");
+        else if (spoken.includes("right arm")) showInfo("Right Arm");
+        else if (spoken.includes("left leg")) showInfo("Left Leg");
+        else if (spoken.includes("right leg")) showInfo("Right Leg");
+        else if (spoken.includes("reproductive") || spoken.includes("private") || spoken.includes("area")) showInfo("Reproductive");
+        else speak("Sorry, I didn't recognize that part. Please try again.");
+      };
+
+      recognition.onerror = function(event) {
+        console.error("Voice recognition error:", event.error);
+        speak("There was an error with voice input. Please try again.");
+      };
     }
 
     function saveEntry() {
