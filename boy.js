@@ -1,53 +1,54 @@
-console.log("boy.js loaded ✅");
+functionfunction showInfo(part) {
+  const infoBox = document.getElementById("infoBox");
+  let problem = "";
+  let suggestion = "";
+  let color = "";
 
-let currentPart = null;
-let currentInfo = '';
+  switch (part) {
+    case "Head":
+      problem = "Persistent or sharp headaches that may be caused by dehydration, stress, eye strain, or even more serious conditions like migraines.";
+      suggestion = "Stay hydrated by drinking water, take regular breaks from screens to reduce eye strain, rest in a quiet and dark room, and consult a doctor if the pain persists or worsens.";
+      color = "#f44336";
+      break;
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM Ready ✅");
+    case "Neck":
+      problem = "Neck stiffness or pain, often caused by poor posture, muscle strain, or sleeping in an awkward position. It may also be related to stress or tension.";
+      suggestion = "Try slow and gentle neck stretches, apply a warm compress to relax tight muscles, and maintain proper posture when sitting or using a mobile device. Seek medical attention if you experience tingling or numbness.";
+      color = "#ff9800";
+      break;
 
-  document.querySelectorAll("area").forEach(area => {
-    area.addEventListener("click", e => {
-      e.preventDefault();
-      const part = area.dataset.part;
-      showInfo(part);
-    });
-  });
+    case "Torso":
+      problem = "Pain or tightness in the chest or abdominal area, which could result from muscle strain, indigestion, or more serious issues like heart or lung problems.";
+      suggestion = "If the pain is sharp, radiates to the arm or jaw, or is accompanied by shortness of breath or dizziness, seek emergency medical help. Otherwise, rest and monitor your symptoms closely.";
+      color = "#e91e63";
+      break;
 
-  document.getElementById("saveBtn").addEventListener("click", saveEntry);
-  document.getElementById("backBtn").addEventListener("click", goBack);
-});
+    case "Left Arm":
+    case "Right Arm":
+      problem = "Soreness, numbness, or shooting pain in the arm due to repetitive movement, injury, or compression of nerves.";
+      suggestion = "Rest the arm, avoid activities that worsen the pain, apply ice for swelling, and gently stretch the muscles. Consult a healthcare provider if symptoms persist or worsen.";
+      color = "#ffc107";
+      break;
 
-function showInfo(part) {
-  const info = {
-    "Head": "Headache? Dizzy? Any head-related issues?",
-    "Neck": "Neck pain or stiffness?",
-    "Torso": "Any chest or stomach discomfort?",
-    "Left Arm": "Pain or weakness in your left arm?",
-    "Right Arm": "Pain or numbness in your right arm?",
-    "Left Leg": "Left leg pain or cramps?",
-    "Right Leg": "Right leg discomfort?",
-    "Reproductive": "Any unusual pain or concerns there?"
-  };
-  currentPart = part;
-  currentInfo = info[part] || "Tapped an unknown area.";
-  document.getElementById("infoBox").textContent = currentInfo;
-}
+    case "Left Leg":
+    case "Right Leg":
+      problem = "Discomfort, aching, or heaviness in the leg which may be due to overuse, injury, poor circulation, or nerve-related conditions.";
+      suggestion = "Elevate your leg, apply cold or warm compresses as needed, wear comfortable footwear, and avoid standing or sitting too long. Visit a doctor if swelling or numbness occurs.";
+      color = "#4caf50";
+      break;
 
-function saveEntry() {
-  if (!currentPart) {
-    alert("Please tap a body part first!");
-    return;
+    case "Reproductive":
+      problem = "Discomfort, cramps, or unusual pain in the reproductive area, which could be linked to hormonal changes, infections, or underlying health issues.";
+      suggestion = "Track symptoms over time, maintain hygiene, avoid irritants, and consult a healthcare provider if pain is intense, recurring, or accompanied by unusual discharge or fever.";
+      color = "#9c27b0";
+      break;
+
+    default:
+      problem = "Area not identified";
+      suggestion = "Please select a valid body part to view more information.";
+      color = "#607d8b";
   }
-  const entries = JSON.parse(localStorage.getItem('painEntries') || '[]');
-  entries.push({ part: currentPart, info: currentInfo, date: new Date().toISOString() });
-  localStorage.setItem('painEntries', JSON.stringify(entries));
-  alert(`Saved entry for ${currentPart}`);
-}
 
-function goBack() {
-  currentPart = null;
-  currentInfo = '';
-  document.getElementById("infoBox").textContent = "Tap a body part";
-  alert("Back to menu (you can link this to your homepage)");
-                                            }
+  infoBox.style.backgroundColor = color;
+  infoBox.textContent = `${part}:\n\n${problem}\n\nSuggested Action: ${suggestion}`;
+}￼Enter
