@@ -1,22 +1,33 @@
-<!DOCTYPE html>
+<!DOCTYP<!DOCTYPE html>
 <html>
 <head>
   <title>Health Assistant - Boys</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <style>
+    .body-image {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+    .info-box {
+      text-align: center;
+      font-family: sans-serif;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      background-color: #f8f8f8;
+    }
+  </style>
 </head>
 <body>
 
   <div class="box">
-    <div class="title">
-      ╔══════════════════════════╗<br>
-      ║&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;║<br>
-      ╚══════════════════════════╝
-    </div>
 
     <!-- BODY IMAGE WITH MAPPING -->
     <div class="body-container">
-      <img src="boy.png" usemap="#bodymap" class="body-image">
+      <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
       <map name="bodymap">
         <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
         <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
@@ -34,18 +45,50 @@
       <h3>Click a body part to track pain.</h3>
     </div>
 
-    <!-- MOTIVATIONAL MESSAGES -->
-    <div class="motivation">
-      <p>"HOW ARE YOU FEELING TODAY?"</p>
-      <p>"A healthy you is a powerful you."</p>
-      <p>"Let’s track how you feel."</p>
-    </div>
-
     <!-- BACK BUTTON -->
-    <div style="margin-top: 15px;">
+    <div style="margin-top: 15px; text-align: center;">
       <button class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
     </div>
   </div>
 
+  <script>
+    function showInfo(part) {
+      const infoBox = document.getElementById("infoBox");
+
+      let message = "";
+
+      switch (part) {
+        case "Head":
+          message = "Headache? Dizziness? Any discomfort in your head?";
+          break;
+        case "Neck":
+          message = "Neck pain or stiffness? Could be posture-related.";
+          break;
+        case "Torso":
+          message = "Any chest or stomach discomfort?";
+          break;
+        case "Left Arm":
+          message = "Pain or weakness in the left arm?";
+          break;
+        case "Right Arm":
+          message = "Pain or numbness in the right arm?";
+          break;
+        case "Left Leg":
+          message = "Left leg pain, cramps, or injuries?";
+          break;
+        case "Right Leg":
+          message = "Any issues with the right leg?";
+          break;
+        case "Reproductive":
+          message = "Are you experiencing any unusual pain or concerns?";
+          break;
+        default:
+          message = "Click a body part to track pain.";
+      }
+
+      infoBox.innerHTML = `<h3>${message}</h3>`;
+    }
+  </script>
+
 </body>
-</html>
+</html>￼Enter
