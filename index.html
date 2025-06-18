@@ -1,35 +1,28 @@
-<!<!DOCTYPE html>
-<html lang="en">
+<!DOCTYP<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pain Tracker</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Health Assistant</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
 
-  <div id="mainMenu">
-    <h1>🩺 Health Assistant</h1>
-    <button onclick="showSection('painMap')">Track Pain</button>
-  </div>
+  <div class="box">
+    <div class="title">
+      ╔══════════════════════════════╗<br>
+      ║&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;║<br>
+      ╚══════════════════════════════╝
+    </div>
 
-  <div id="painMapSection" class="hidden">
-    <h2>Pain Map Tracker</h2>
-    
     <div class="button-container">
-      <button onclick="showPainInfo('Head')">🧠 Head</button>
-      <button onclick="showPainInfo('Chest')">❤️ Chest</button>
-      <button onclick="showPainInfo('Stomach')">🍽️ Stomach</button>
-      <button onclick="showPainInfo('Legs')">🦵 Legs</button>
+      <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>
+      <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>
     </div>
 
-    <div id="painInfo" class="info-box hidden">
-      <h3 id="areaTitle"></h3>
-      <p id="reason"></p>
-      <p id="suggestion"></p>
+    <div class="motivation">
+      <p>"HOW ARE YOU FEELING TODAY?"</p>
+      <p>"A healthy you is a powerful you."</p>
+      <p>"Let’s track how you feel."</p>
     </div>
-
-    <button onclick="goHome()">⬅️ Back</button>
   </div>
 
   <script src="script.js"></script>
