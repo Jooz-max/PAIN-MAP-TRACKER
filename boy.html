@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Body Check</title>
+  <title>Pain Map Tracker</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -106,6 +106,24 @@
     .voice-button:hover {
       background-color: #512da8;
     }
+
+    /* Save popup style */
+    #savePopup {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      border: 2px solid #28a745;
+      color: #28a745;
+      font-weight: bold;
+      padding: 18px 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+      z-index: 999;
+      font-size: 20px;
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -132,6 +150,9 @@
       <button onclick="history.back()">Back</button>
     </div>
   </div>
+
+  <!-- Save Popup -->
+  <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
 
   <script>
     function speak(text) {
@@ -213,7 +234,6 @@
         const spoken = event.results[0][0].transcript.toLowerCase();
         console.log("Voice Input:", spoken);
 
-        // Match spoken input to button options
         if (spoken.includes("head")) showInfo("Head");
         else if (spoken.includes("neck")) showInfo("Neck");
         else if (spoken.includes("torso") || spoken.includes("chest") || spoken.includes("respiratory")) showInfo("Torso");
@@ -232,8 +252,18 @@
     }
 
     function saveEntry() {
-      alert("Entry saved (simulation).");
+      const popup = document.getElementById("savePopup");
+      const time = new Date();
+      const formattedTime = time.toLocaleString();
+      document.getElementById("saveTime").textContent = formattedTime;
+
+      popup.style.display = "block";
+      speak(`Entry saved on ${formattedTime}`);
+
+      setTimeout(() => {
+        popup.style.display = "none";
+      }, 3000);
     }
   </script>
 </body>
-  </html>
+</html>
