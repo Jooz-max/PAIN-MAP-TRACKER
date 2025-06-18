@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Assistant - Boys</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+  <div class="box">
+    <div class="title">
+      ╔══════════════════════════╗<br>
+      ║&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;║<br>
+      ╚══════════════════════════╝
+    </div>
+
+    <!-- BODY IMAGE WITH MAPPING -->
+    <div class="body-container">
+      <img src="boy.png" usemap="#bodymap" class="body-image">
+      <map name="bodymap">
+        <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
+        <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
+        <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
+        <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
+        <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
+        <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
+        <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
+        <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
+      </map>
+    </div>
+
+    <!-- DYNAMIC INFO OUTPUT -->
+    <div class="info-box" id="infoBox">
+      <h3>Click a body part to track pain.</h3>
+    </div>
+
+    <!-- MOTIVATIONAL MESSAGES -->
+    <div class="motivation">
+      <p>"HOW ARE YOU FEELING TODAY?"</p>
+      <p>"A healthy you is a powerful you."</p>
+      <p>"Let’s track how you feel."</p>
+    </div>
+
+    <!-- BACK BUTTON -->
+    <div style="margin-top: 15px;">
+      <button class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
+    </div>
+  </div>
+
+</body>
+</html>
