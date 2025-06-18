@@ -17,8 +17,8 @@ body {
 }
 
 .box {
-  width: 600%;
-  max-width: 1000px;
+  width: 100%;
+  max-width: 500px;
   height: 100%;
   display: flex;
   flex-direction: column;
