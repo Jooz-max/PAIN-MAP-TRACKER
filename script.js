@@ -4,4 +4,4 @@ function goTo(gender) {
   } else if (gender === 'girl') {
     window.location.href = "girl.html";
   }
-}￼Enter
+}
