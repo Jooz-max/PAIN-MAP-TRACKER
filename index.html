@@ -1,53 +1,25 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <title>Health Assistant</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-  <div class="box">
-    <div class="title">
-      ╔════════════════════════╗<br>
-      ║&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;║<br>
-      ╚═══════=════════════════╝
-    </div>
+<html>  
+<head>  
+  <title>Health Assistant</title>  
+  <link rel="stylesheet" href="style.css">  
+</head>  
+<body>    <div class="box">  
+    <div class="title">  
+      ╔══════════════════════════╗<br>  
+      ║&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;║<br>  
+      ╚══════════════════════════╝  
+    </div>  <div class="button-container">  
+  <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>  
+  <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>  
+</div>  
 
-    <div class="button-container">
-      <button class="btn" onclick="goTo('boy')">👦 MALE</button>
-      <button class="btn" onclick="goTo('girl')">👧 FEMALE</button>
-    </div>
+<div class="motivation">  
+  <p>"HOW ARE YOU FEELING TODAY?"</p>  
+  <p>"A healthy you is a powerful you."</p>  
+  <p>"Let’s track how you feel."</p>  
+</div>
 
-    <div class="motivation">
-      <p>"HOW ARE YOU FEELING TODAY?"</p>
-      <p>"A healthy you is a powerful you."</p>
-      <p>"Let’s track how you feel."</p>
-    </div>
-
-    <div class="body-container" id="maleSection" style="display:none;">
-      <img src="boy.png" usemap="#bodymap" class="body-image">
-      <map name="bodymap">
-        <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
-        <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
-        <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
-        <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
-        <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
-        <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
-        <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
-        <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
-      </map>
-
-      <div class="info-box" id="infoBox">
-        <h3>Click a body part to track pain.</h3>
-      </div>
-    </div>
-
-    <div id="femaleSection" style="display:none;">
-      <p>👧 Female body features coming soon...</p>
-    </div>
-
-  </div>
-
-  <script src="script.js"></script>
-</body>
-  </html>
+  </div>    <script src="script.js"></script>  </body>  
+</html>￼Enter
