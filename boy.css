@@ -1,4 +1,4 @@
-* {
+* * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -7,42 +7,45 @@
 body {
   font-family: sans-serif;
   background-color: #f0f0f0;
-  text-align: center;
-}
-
-.container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90vh;
+  height: 100vh;
+}
+
+.main-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
 
 .body-image {
   height: 90vh;
   width: auto;
-  pointer-events: none; /* So image doesn't block button clicks */
-  z-index: 0;
-  position: relative;
+  max-width: 100%;
+  pointer-events: none;
 }
 
-.part-buttons {
+.part-buttons,
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-top: 20px;
   z-index: 10;
-  position: relative;
 }
 
 .part-buttons button,
 .button-container button {
-  padding: 14px 24px;       /* Larger buttons */
+  padding: 14px 24px;
   margin: 8px;
-  font-size: 18px;          /* Bigger text */
+  font-size: 18px;
   border: none;
   border-radius: 6px;
   background-color: #007bff;
   color: white;
   cursor: pointer;
-  z-index: 10;
-  position: relative;
 }
 
 .part-buttons button:hover,
@@ -56,15 +59,7 @@ body {
   font-size: 18px;
   padding: 10px;
   border-radius: 6px;
-  z-index: 10;
-  position: relative;
   background-color: #ffffff;
-  display: inline-block;
   max-width: 90%;
-}
-
-.button-container {
-  margin-top: 15px;
-  z-index: 10;
-  position: relative;
-  }
+  text-align: center;
+}￼Enter
