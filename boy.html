@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Health Assistant - Boys</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Clickable Body Image</title>
   <style>
     .body-image {
       max-width: 100%;
@@ -10,49 +9,27 @@
       display: block;
       margin: 0 auto;
     }
-
-    .info-box, .log-box {
+    .info-box {
       text-align: center;
       font-family: sans-serif;
-      margin: 15px auto;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f8f8f8;
-      width: 90%;
-      max-width: 400px;
+      margin-top: 20px;
+      font-size: 18px;
+      min-height: 60px;
     }
-
-    .btn {
-      display: block;
-      margin: 10px auto;
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
       padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
+      margin: 0 10px;
       font-size: 16px;
-      cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #0056b3;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="box">
-
-    <!-- BODY IMAGE WITH MAPPING -->
-    <div class="body-container">
-      <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
-      <map name="bodymap">
+      border-radius: 8px;
+      border: none;
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Health Assistant - Boys</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Clickable Body Image</title>
   <style>
     .body-image {
       max-width: 100%;
@@ -60,171 +37,149 @@
       display: block;
       margin: 0 auto;
     }
-
-    .info-box, .log-box {
+    .info-box {
       text-align: center;
       font-family: sans-serif;
-      margin: 15px auto;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-      background-color: #f8f8f8;
-      width: 90%;
-      max-width: 400px;
+      margin-top: 20px;
+      font-size: 18px;
+      min-height: 60px;
     }
-
-    .btn {
-      display: block;
-      margin: 10px auto;
+    .button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
       padding: 10px 20px;
-      background-color: #007BFF;
-      color: white;
-      border: none;
-      border-radius: 5px;
+      margin: 0 10px;
       font-size: 16px;
+      border-radius: 8px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
       cursor: pointer;
+      transition: background-color 0.3s ease;
     }
-
-    .btn:hover {
-      background-color: #0056b3;
+    button:hover {
+      background-color: #45a049;
     }
   </style>
 </head>
 <body>
 
-  <div class="box">
+  <!-- ✅ Body image -->
+  <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
 
-    <!-- BODY IMAGE WITH MAPPING -->
-    <div class="body-container">
-      <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
-      <map name="bodymap">
-        <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
-        <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
-        <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
-        <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
-        <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
-        <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
-        <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
-        <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
-      </map>
-    </div>
+  <!-- ✅ Clickable areas -->
+  <map name="bodymap">
+    <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
+    <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
+    <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
+    <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
+    <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
+    <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
+    <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
+    <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
+  </map>
 
-    <!-- DYNAMIC INFO OUTPUT -->
-    <div class="info-box" id="infoBox">
-      <h3>Tap a body part to track pain.</h3>
-    </div>
+  <!-- ✅ Message area -->
+  <div class="info-box" id="infoBox">Tap a body part</div>
 
-    <!-- SAVE ENTRY BUTTON -->
-    <button class="btn" onclick="saveEntry()">💾 Save Entry</button>
-
-    <!-- LOG BOX -->
-    <div class="log-box" id="logBox">
-      <strong>Saved Entries:</strong>
-      <ul id="logList"></ul>
-    </div>
-
-    <!-- BACK BUTTON -->
-    <button class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
+  <!-- ✅ Buttons -->
+  <div class="button-container">
+    <button onclick="saveEntry()">Save Entry💾</button>
+    <button onclick="goBack()">⬅️Back to Menu</button>
   </div>
 
+  <!-- ✅ Script for showing info and buttons -->
   <script>
-    let currentMessage = "";
+    let currentPart = null;
+    let currentInfo = '';
 
     function showInfo(part) {
-      const infoBox = document.getElementById("infoBox");
-
-      switch (part) {
-        case "Head":
-          currentMessage = "Headache? Dizziness? Any discomfort in your head?";
-          break;
-        case "Neck":
-          currentMessage = "Neck pain or stiffness? Could be posture-related.";
-          break;
-        case "Torso":
-          currentMessage = "Any chest or stomach discomfort?";
-          break;
-        case "Left Arm":
-          currentMessage = "Pain or weakness in the left arm?";
-          break;
-        case "Right Arm":
-          currentMessage = "Pain or numbness in the right arm?";
-          break;
-        case "Left Leg":
-          currentMessage = "Left leg pain, cramps, or injuries?";
-          break;
-        case "Right Leg":
-          currentMessage = "Any issues with the right leg?";
-          break;
-        case "Reproductive":
-          currentMessage = "Are you experiencing any unusual pain or concerns?";
-          break;
-        default:
-          currentMessage = "Tap a body part to track pain.";
-      }
-
-      infoBox.innerHTML = `<h3>${currentMessage}</h3>`;
+      const info = {
+        "Head": "Headache? Dizzy? Any head-related issues?",
+        "Neck": "Neck pain or stiffness?",
+        "Torso": "Any chest or stomach discomfort?",
+        "Left Arm": "Pain or weakness in your left arm?",
+        "Right Arm": "Pain or numbness in your right arm?",
+        "Left Leg": "Left leg pain or cramps?",
+        "Right Leg": "Right leg discomfort?",
+        "Reproductive": "Any unusual pain or concerns there?"
+      };
+      currentPart = part;
+      currentInfo = info[part] || "Tapped an unknown area.";
+      document.getElementById("infoBox").textContent = currentInfo;
     }
 
     function saveEntry() {
-      if (!currentMessage) return;
+      if (!currentPart) {
+        alert("Please tap a body part first!");
+        return;
+      }
+      const entries = JSON.parse(localStorage.getItem('painEntries') || '[]');
+      entries.push({ part: currentPart, info: currentInfo, date: new Date().toISOString() });
+      localStorage.setItem('painEntries', JSON.stringify(entries));
+      alert(`Saved entry for ${currentPart}`);
+    }
 
-      const logList = document.getElementById("logList");
-      const li = document.createElement("li");
-      li.textContent = currentMessage;
-      logList.appendChild(li);
+    function goBack() {
+      currentPart = null;
+      currentInfo = '';
+      document.getElementById("infoBox").textContent = "Tap a body part";
+      // You can add logic here to show main menu or navigate elsewhere
+      alert("Back to menu (functionality to implement)");
     }
   </script>
 
 </body>
-</html>￼Enter        <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
-        <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
-        <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
-        <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
-        <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
-        <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
-        <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
-        <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
-      </map>
-    </div>
+</html>￼Enter      background-color: #4CAF50;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
 
-    <!-- DYNAMIC INFO OUTPUT -->
-    <div class="info-box" id="infoBox">
-      <h3>Tap a body part to track pain.</h3>
-    </div>
+  <!-- ✅ Body image -->
+  <img src="boy.png" usemap="#bodymap" class="body-image" alt="Boy Body">
 
-    <!-- SAVE ENTRY BUTTON -->
-    <button class="btn" onclick="saveEntry()">💾 Save Entry</button>
+  <!-- ✅ Clickable areas -->
+  <map name="bodymap">
+    <area shape="rect" coords="80,40,140,100" alt="Head" onclick="showInfo('Head')">
+    <area shape="rect" coords="100,100,130,130" alt="Neck" onclick="showInfo('Neck')">
+    <area shape="rect" coords="80,130,150,200" alt="Torso" onclick="showInfo('Torso')">
+    <area shape="rect" coords="50,130,80,200" alt="Left Arm" onclick="showInfo('Left Arm')">
+    <area shape="rect" coords="150,130,180,200" alt="Right Arm" onclick="showInfo('Right Arm')">
+    <area shape="rect" coords="80,200,110,300" alt="Left Leg" onclick="showInfo('Left Leg')">
+    <area shape="rect" coords="120,200,150,300" alt="Right Leg" onclick="showInfo('Right Leg')">
+    <area shape="rect" coords="100,180,130,200" alt="Reproductive" onclick="showInfo('Reproductive')">
+  </map>
+- ✅ Message area -->
+  <div class="info-box" id="infoBox">Tap a body part</div>
 
-    <!-- LOG BOX -->
-    <div class="log-box" id="logBox">
-      <strong>Saved Entries:</strong>
-      <ul id="logList"></ul>
-    </div>
-
-    <!-- BACK BUTTON -->
-utton class="btn" onclick="window.location.href='index.html'">⬅️ Back to Menu</button>
+  <!-- ✅ Buttons -->
+  <div class="button-container">
+    <button onclick="saveEntry()">Save Entry</button>
+    <button onclick="goBack()">Back to Menu</button>
   </div>
 
+  <!-- ✅ Script for showing info and buttons -->
   <script>
-    let currentMessage = "";
+    let currentPart = null;
+    let currentInfo = '';
 
     function showInfo(part) {
-      const infoBox = document.getElementById("infoBox");
-
-      switch (part) {
-        case "Head":
-          currentMessage = "Headache? Dizziness? Any discomfort in your head?";
-          break;
-        case "Neck":
-          currentMessage = "Neck pain or stiffness? Could be posture-related.";
-          break;
-        case "Torso":
-          currentMessage = "Any chest or stomach discomfort?";
-          break;
-        case "Left Arm":
-          currentMessage = "Pain or weakness in the left arm?";
-          break;
-        case "Right Arm":
-          currentMessage = "Pain or numbness in the right arm?";
-          break;
-        case "Left Leg":
+      const info = {
+        "Head": "Headache? Dizzy? Any head-related issues?",
+        "Neck": "Neck pain or stiffness?",
+        "Torso": "Any chest or stomach discomfort?",
+        "Left Arm": "Pain or weakness in your left arm?",
+        "Right Arm": "Pain or numbness in your right arm?",
+        "Left Leg": "Left leg pain or cramps?",
+        "Right Leg": "Right leg discomfort?",
+        "Reproductive": "Any unusual pain or concerns there?"
+      };
