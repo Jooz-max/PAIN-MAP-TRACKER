@@ -1,52 +1,52 @@
-function showInfo(part) {
+functionfunction showInfo(part) {
   const infoBox = document.getElementById("infoBox");
   let problem = "";
   let suggestion = "";
   let color = "";
 
-  switch (part) {
+  switch(part) {
     case "Head":
-      problem = "Persistent or sharp headaches that may be caused by dehydration, stress, eye strain, or even more serious conditions like migraines.";
-      suggestion = "Stay hydrated by drinking water, take regular breaks from screens, rest in a quiet and dark room, and consult a doctor if the pain persists or worsens.";
+      problem = "Persistent Headache or Migraine";
+      suggestion = "Make sure you're hydrated, take a break from screens, and consider lying down in a quiet space. Consult a doctor if it lasts long or recurs frequently.";
       color = "#f44336";
       break;
     case "Neck":
-      problem = "Neck stiffness or pain, often caused by poor posture, muscle strain, or sleeping in an awkward position.";
-      suggestion = "Try slow and gentle neck stretches, use a warm compress to relax tight muscles, and maintain proper posture when using a mobile device.";
+      problem = "Stiff or Painful Neck";
+      suggestion = "This could be due to poor posture or sleeping position. Try gentle neck stretches, heat therapy, or massage. Seek medical advice if severe.";
       color = "#ff9800";
       break;
     case "Torso":
-      problem = "Pain or tightness in the chest or abdomen that could indicate muscle strain, indigestion, or a more serious condition.";
-      suggestion = "If you feel pressure, dizziness, or pain spreading to your arm or jaw, seek medical help immediately.";
+      problem = "Chest Discomfort or Pressure";
+      suggestion = "Could indicate a serious issue like heart or lung problems. Monitor symptoms and seek immediate medical help if it's sharp or spreading.";
       color = "#e91e63";
       break;
     case "Left Arm":
     case "Right Arm":
-      problem = "Pain in the arm due to strain, poor posture, or nerve compression.";
-      suggestion = "Rest, ice the area, and avoid movements that cause pain. Seek medical help if symptoms persist.";
+      problem = "Arm Pain or Weakness";
+      suggestion = "This might be due to overuse, muscle strain, or nerve compression. Rest, apply ice, and avoid lifting heavy objects. Consult a doctor if numbness occurs.";
       color = "#ffc107";
       break;
     case "Left Leg":
     case "Right Leg":
-      problem = "Leg pain or cramps from overuse, lack of hydration, or circulation issues.";
-      suggestion = "Elevate the leg, rest, and gently massage. See a doctor if there’s swelling or numbness.";
+      problem = "Leg Soreness or Fatigue";
+      suggestion = "Can result from long periods of standing or walking. Elevate your leg, do gentle stretches, and use cold/warm compress. Seek help if swelling or pain worsens.";
       color = "#4caf50";
       break;
     case "Reproductive":
-      problem = "Discomfort or abnormal pain in reproductive organs, possibly related to infection or internal issues.";
-      suggestion = "Maintain hygiene, avoid irritants, and consult a doctor for diagnosis and care.";
+      problem = "Reproductive Area Discomfort";
+      suggestion = "Could be caused by infection, irritation, or underlying health conditions. Avoid self-diagnosing and consult a healthcare provider promptly.";
       color = "#9c27b0";
       break;
     default:
-      problem = "Unknown area selected.";
-      suggestion = "Please select a valid body part.";
+      problem = "Unknown Area";
+      suggestion = "No information available.";
       color = "#607d8b";
   }
 
   infoBox.style.backgroundColor = color;
-  infoBox.textContent = `${part}:\n\n${problem}\n\nSuggested Action: ${suggestion}`;
+  infoBox.textContent = `${part}: ${problem} — ${suggestion}`;
 }
 
 function saveEntry() {
   alert("Entry saved successfully!");
-}
+}￼Enter
