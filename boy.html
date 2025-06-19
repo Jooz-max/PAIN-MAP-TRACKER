@@ -348,7 +348,8 @@
       savedEntriesDiv.style.display = "block";
     }
 
-    <script type="module">
+  </script>
+<script type="module">
     // Firebase SDK imports
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
@@ -368,8 +369,9 @@
 
     // Make Firestore accessible to global scope
     window.firestoreDB = db;
-  </script/>
-    
+  </script>
+
+  <script>
     async function saveEntryToFirestore(infoText) {
       const db = window.firestoreDB;
       try {
@@ -396,4 +398,5 @@
       saveEntryToFirestore(info);
     }
   </script>
+</body>
 </html>
