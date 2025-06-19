@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pain Map Tracker</title>
+  <style>
+    /* Styling code remains unchanged */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: sans-serif;
+      background-color: #f0f0f0;
+      height: 90vh;
+      overflow: hidden;
+      position: relative;
+    }
+    .main-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    .body-image {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 90vh;
+      max-width: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .part-buttons {
+      position: absolute;
+      top: 60%;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      width: 95%;
+      z-index: 2;
+    }
+    .part-buttons button {
+      padding: 26px 40px;
+      margin: 12px;
+      font-size: 24px;
+      border: none;
+      border-radius: 10px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    .part-buttons button:hover {
+      background-color: #0056b3;
+    }
+    .info-box {
+      position: absolute;
+      bottom: 160px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 3;
+      background-color: #ffffff;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 25px;
+      border-radius: 12px;
+      text-align: center;
+      max-width: 95%;
+      width: 95%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .button-container {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      gap: 20px;
+    }
+    .button-container button {
+      padding: 24px 60px;
+      font-size: 24px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      min-width: 160px;
+    }
+    .button-container button:hover {
+      background-color: #1e7e34;
+    }
+    .voice-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 3;
+      padding: 16px 24px;
+      font-size: 20px;
+      background-color: #673ab7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .voice-button:hover {
+      background-color: #512da8;
+    }
+    .view-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 3;
+      padding: 16px 24px;
+      font-size: 20px;
+      background-color: #ff4b69;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .view-button:hover {
+      background-color: #ff2e52;
+    }
+    #savePopup {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #ffffff;
+      border: 2px solid #28a745;
+      color: #28a745;
+      font-weight: bold;
+      padding: 18px 30px;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.2);
+      z-index: 999;
+      font-size: 20px;
+      display: none;
+    }
+    #savedEntries {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      background-color: #ffffff;
+      font-size: 18px;
+      font-weight: bold;
+      padding: 15px;
+      border-radius: 8px;
+      max-width: 90%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <img src="girl.png" alt="Body Diagram" class="body-image">
+    <div class="part-buttons">
+      <button onclick="showInfo('Head')">Head</button>
+      <button onclick="showInfo('Neck')">Neck</button>
+      <button onclick="showInfo('Virginia')">Virginia</button>
+      <button onclick="showInfo('Left Arm')">Left Arm</button>
+      <button onclick="showInfo('Right Arm')">Right Arm</button>
+      <button onclick="showInfo('Left Leg')">Left Leg</button>
+      <button onclick="showInfo('Right Leg')">Right Leg</button>
+      <button onclick="showInfo('Reproductive')">Reproductive Area</button>
+    </div>
+    <div id="infoBox" class="info-box"></div>
+    <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
+    <div class="button-container">
+      <button onclick="saveEntry()">Save Entry</button>
+      <button onclick="history.back()">Back</button>
+    </div>
+    <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
+    <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
+    <div id="savedEntries">
+      <h3>Saved Entries:</h3>
+      <ul id="entriesList"></ul>
+    </div>
+  </div>
+
+  <!-- Firebase Script Module -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
+      authDomain: "pain-map-tracker.firebaseapp.com",
+      projectId: "pain-map-tracker",
+      storageBucket: "pain-map-tracker.appspot.com",
+      messagingSenderId: "1033877333158",
+      appId: "1:1033877333158:web:f68963a3b37e6a24c38067",
+      measurementId: "G-720JSK3F66"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    window.saveEntry = async function () {
+      const info = document.getElementById("infoBox").textContent.trim();
+      if (info === "") {
+        alert("Please select a body part first.");
+        return;
+      }
+      try {
+        await addDoc(collection(db, "pain_entries"), {
+          text: info,
+          timestamp: serverTimestamp()
+        });
+        const popup = document.getElementById("savePopup");
+        document.getElementById("saveTime").textContent = new Date().toLocaleString();
+        popup.style.display = "block";
+        setTimeout(() => popup.style.display = "none", 3000);
+      } catch (e) {
+        alert("Error saving entry: " + e.message);
+      }
+    };
+
+    window.viewSavedEntries = async function () {
+      const list = document.getElementById("entriesList");
+      const savedDiv = document.getElementById("savedEntries");
+      list.innerHTML = "";
+      try {
+        const snapshot = await getDocs(collection(db, "pain_entries"));
+        snapshot.forEach(doc => {
+          const li = document.createElement("li");
+          li.textContent = doc.data().text;
+          list.appendChild(li);
+        });
+        savedDiv.style.display = "block";
+      } catch (e) {
+        alert("Error fetching entries: " + e.message);
+      }
+    };
+  </script>
+
+  <!-- Non-module Script: Voice + Info Logic -->
+  <script>
+    function speak(text) {
+      const message = new SpeechSynthesisUtterance(text);
+      message.rate = 1;
+      message.pitch = 1;
+      message.lang = 'en-US';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(message);
+    }
+
+    function showInfo(part) {
+      const infoBox = document.getElementById("infoBox");
+      let problem = "", suggestion = "", color = "";
+      switch(part.toLowerCase()) {
+        case "head":
+          problem = "Persistent headache or pressure";
+          suggestion = "Stay hydrated, rest, and reduce screen time.";
+          color = "#f44336"; break;
+        case "neck":
+          problem = "Neck stiffness or discomfort";
+          suggestion = "Do neck stretches, apply heat, maintain posture.";
+          color = "#ff9800"; break;
+        case "Virginia":
+        case "Virginia":
+          problem = "Respiratory issues like asthma or shortness of breath.";
+          suggestion = "Avoid allergens, do breathing exercises, and consult a doctor.";
+          color = "#03a9f4"; break;
+        case "left arm":
+        case "right arm":
+          problem = "Arm fatigue or pain";
+          suggestion = "Stretch, avoid heavy strain, rest if sore.";
+          color = "#ffc107"; break;
+        case "left leg":
+        case "right leg":
+          problem = "Leg soreness or heaviness";
+          suggestion = "Elevate, gently massage, rest after walking.";
+          color = "#4caf50"; break;
+        case "reproductive":
+          problem = "Pain or discomfort in reproductive area.";
+          suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
+          color = "#9c27b0"; break;
+        default:
+          problem = "Unknown area selected.";
+          suggestion = "Try selecting a different part.";
+          color = "#607d8b";
+      }
+      infoBox.innerHTML = `
+        <div style="color:${color};">🩺 Problem: ${problem}</div>
+        <div style="margin-top:10px;">💡 Suggestion: ${suggestion}</div>
+      `;
+      speak(problem + ". " + suggestion);
+    }
+
+    function startVoice() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const voiceText = event.results[0][0].transcript.toLowerCase();
+        const parts = ["head", "neck", "Virginia", "Virginia", "left arm", "right arm", "left leg", "right leg", "reproductive"];
+        const matched = parts.find(p => voiceText.includes(p));
+        if (matched) {
+          showInfo(matched);
+        } else {
+          speak("Body part not recognized. Try again.");
+        }
+      };
+
+      recognition.onerror = function(event) {
+        speak("Voice recognition error. Please try again.");
+      };
+    }
+  </script>
+</body>
+</html>
