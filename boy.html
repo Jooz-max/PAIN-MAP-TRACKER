@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -178,6 +179,7 @@
 
     <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
     <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
+
     <div id="savedEntries">
       <h3>Saved Entries:</h3>
       <ul id="entriesList"></ul>
@@ -266,62 +268,51 @@
         document.getElementById("saveTime").innerText = localTime;
         const popup = document.getElementById("savePopup");
         popup.style.display = "block";
-        setTimeout(() => { popup.style.display = "none"; }, 2500);
-      } catch (err) {
-        alert("Error saving entry: " + err.message);
+        setTimeout(() => popup.style.display = "none", 3000);
+      } catch (error) {
+        alert("❌ Error saving entry: " + error.message);
       }
     };
 
     window.viewSavedEntries = async function () {
-      const entriesList = document.getElementById("entriesList");
-      entriesList.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "pain_entries"));
-      snapshot.forEach((docSnap) => {
-        const li = document.createElement("li");
-        li.textContent = `${docSnap.data().text} (Saved: ${docSnap.data().localTime})`;
+      const container = document.getElementById("savedEntries");
+      const list = document.getElementById("entriesList");
 
-        const delBtn = document.createElement("button");
-        delBtn.textContent = "Delete";
-        delBtn.className = "delete-button";
-        delBtn.onclick = async () => {
-          await deleteDoc(doc(db, "pain_entries", docSnap.id));
-          viewSavedEntries();
-        };
-
-        li.appendChild(delBtn);
-        entriesList.appendChild(li);
-      });
-      document.getElementById("savedEntries").style.display = "block";
-    };
-  </script>
-
-  <script>
-    function startVoice() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        alert("Speech recognition not supported in this browser.");
+      if (container.style.display === "block") {
+        container.style.display = "none";
         return;
       }
 
-      const recognition = new SpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-      recognition.start();
+      list.innerHTML = "";
 
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-        if (transcript.includes("head")) showInfo("Head");
-        else if (transcript.includes("neck")) showInfo("Neck");
-        else if (transcript.includes("respiratory") || transcript.includes("chest")) showInfo("Torso");
-        else if (transcript.includes("left arm")) showInfo("Left Arm");
-        else if (transcript.includes("right arm")) showInfo("Right Arm");
-        else if (transcript.includes("left leg")) showInfo("Left Leg");
-        else if (transcript.includes("right leg")) showInfo("Right Leg");
-        else if (transcript.includes("reproductive") || transcript.includes("private")) showInfo("Reproductive");
-        else alert("Unrecognized part: " + transcript);
-      };
-    }
+      const snapshot = await getDocs(collection(db, "pain_entries"));
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <span>${data.text} <br><small>${data.localTime}</small></span>
+          <button class="delete-button" onclick="deleteEntry('${docSnap.id}')">Delete</button>
+        `;
+        list.appendChild(li);
+      });
+
+      container.style.display = "block";
+    };
+
+    window.deleteEntry = async function (id) {
+      if (!confirm("Are you sure you want to delete this entry?")) return;
+
+      try {
+        await deleteDoc(doc(db, "pain_entries", id));
+        viewSavedEntries(); // Refresh list
+      } catch (error) {
+        alert("❌ Error deleting entry: " + error.message);
+      }
+    };
+
+    window.startVoice = function () {
+      alert("🎤 Voice input not yet implemented.");
+    };
   </script>
 </body>
-</html>￼
+</html>
