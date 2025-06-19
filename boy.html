@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
   <style>
-    /* Your styles remain unchanged */
+    /* Styling code remains unchanged */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
@@ -183,72 +183,10 @@
     </div>
   </div>
 
-  <script>
-    function speak(text) {
-      const message = new SpeechSynthesisUtterance(text);
-      message.rate = 1;
-      message.pitch = 1;
-      message.lang = 'en-US';
-      speechSynthesis.cancel();
-      speechSynthesis.speak(message);
-    }
-
-    function showInfo(part) {
-      const infoBox = document.getElementById("infoBox");
-      let problem = "";
-      let suggestion = "";
-      let color = "";
-      switch(part.toLowerCase()) {
-        case "head":
-          problem = "Persistent headache or pressure";
-          suggestion = "Stay hydrated, rest, and reduce screen time.";
-          color = "#f44336";
-          break;
-        case "neck":
-          problem = "Neck stiffness or discomfort";
-          suggestion = "Do neck stretches, apply heat, maintain posture.";
-          color = "#ff9800";
-          break;
-        case "torso":
-        case "respiratory":
-          problem = "Respiratory issues like asthma or shortness of breath.";
-          suggestion = "Avoid allergens, do breathing exercises, and consult a doctor.";
-          color = "#03a9f4";
-          break;
-        case "left arm":
-        case "right arm":
-          problem = "Arm fatigue or pain";
-          suggestion = "Stretch, avoid heavy strain, rest if sore.";
-          color = "#ffc107";
-          break;
-        case "left leg":
-        case "right leg":
-          problem = "Leg soreness or heaviness";
-          suggestion = "Elevate, gently massage, rest after walking.";
-          color = "#4caf50";
-          break;
-        case "reproductive":
-          problem = "Pain or discomfort in reproductive area.";
-          suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
-          color = "#9c27b0";
-          break;
-        default:
-          problem = "Unknown area selected.";
-          suggestion = "Try selecting a different part.";
-          color = "#607d8b";
-      }
-      infoBox.innerHTML = `
-        <div style="color:${color};">🩺 Problem: ${problem}</div>
-        <div style="margin-top:10px;">💡 Suggestion: ${suggestion}</div>
-      `;
-      speak(problem + ". " + suggestion);
-    }
-  </script>
-
-  <!-- Firebase & Save Function Scripts Inserted Here -->
+  <!-- Firebase Script Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
@@ -262,34 +200,118 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    window.firestoreDB = db;
-  </script>
 
-  <script>
-    async function saveEntryToFirestore(infoText) {
-      const db = window.firestoreDB;
-      try {
-        await addDoc(collection(db, "pain_entries"), {
-          text: infoText,
-          timestamp: new Date()
-        });
-        const popup = document.getElementById("savePopup");
-        const time = new Date().toLocaleString();
-        document.getElementById("saveTime").textContent = time;
-        popup.style.display = "block";
-        setTimeout(() => popup.style.display = "none", 3000);
-      } catch (e) {
-        alert("Error saving entry: " + e.message);
-      }
-    }
-
-    function saveEntry() {
+    window.saveEntry = async function () {
       const info = document.getElementById("infoBox").textContent.trim();
       if (info === "") {
         alert("Please select a body part first.");
         return;
       }
-      saveEntryToFirestore(info);
+      try {
+        await addDoc(collection(db, "pain_entries"), {
+          text: info,
+          timestamp: serverTimestamp()
+        });
+        const popup = document.getElementById("savePopup");
+        document.getElementById("saveTime").textContent = new Date().toLocaleString();
+        popup.style.display = "block";
+        setTimeout(() => popup.style.display = "none", 3000);
+      } catch (e) {
+        alert("Error saving entry: " + e.message);
+      }
+    };
+
+    window.viewSavedEntries = async function () {
+      const list = document.getElementById("entriesList");
+      const savedDiv = document.getElementById("savedEntries");
+      list.innerHTML = "";
+      try {
+        const snapshot = await getDocs(collection(db, "pain_entries"));
+        snapshot.forEach(doc => {
+          const li = document.createElement("li");
+          li.textContent = doc.data().text;
+          list.appendChild(li);
+        });
+        savedDiv.style.display = "block";
+      } catch (e) {
+        alert("Error fetching entries: " + e.message);
+      }
+    };
+  </script>
+
+  <!-- Non-module Script: Voice + Info Logic -->
+  <script>
+    function speak(text) {
+      const message = new SpeechSynthesisUtterance(text);
+      message.rate = 1;
+      message.pitch = 1;
+      message.lang = 'en-US';
+      speechSynthesis.cancel();
+      speechSynthesis.speak(message);
+    }
+
+    function showInfo(part) {
+      const infoBox = document.getElementById("infoBox");
+      let problem = "", suggestion = "", color = "";
+      switch(part.toLowerCase()) {
+        case "head":
+          problem = "Persistent headache or pressure";
+          suggestion = "Stay hydrated, rest, and reduce screen time.";
+          color = "#f44336"; break;
+        case "neck":
+          problem = "Neck stiffness or discomfort";
+          suggestion = "Do neck stretches, apply heat, maintain posture.";
+          color = "#ff9800"; break;
+        case "torso":
+        case "respiratory":
+          problem = "Respiratory issues like asthma or shortness of breath.";
+          suggestion = "Avoid allergens, do breathing exercises, and consult a doctor.";
+          color = "#03a9f4"; break;
+        case "left arm":
+        case "right arm":
+          problem = "Arm fatigue or pain";
+          suggestion = "Stretch, avoid heavy strain, rest if sore.";
+          color = "#ffc107"; break;
+        case "left leg":
+        case "right leg":
+          problem = "Leg soreness or heaviness";
+          suggestion = "Elevate, gently massage, rest after walking.";
+          color = "#4caf50"; break;
+        case "reproductive":
+          problem = "Pain or discomfort in reproductive area.";
+          suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
+          color = "#9c27b0"; break;
+        default:
+          problem = "Unknown area selected.";
+          suggestion = "Try selecting a different part.";
+          color = "#607d8b";
+      }
+      infoBox.innerHTML = `
+        <div style="color:${color};">🩺 Problem: ${problem}</div>
+        <div style="margin-top:10px;">💡 Suggestion: ${suggestion}</div>
+      `;
+      speak(problem + ". " + suggestion);
+    }
+
+    function startVoice() {
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = 'en-US';
+      recognition.start();
+
+      recognition.onresult = function(event) {
+        const voiceText = event.results[0][0].transcript.toLowerCase();
+        const parts = ["head", "neck", "torso", "respiratory", "left arm", "right arm", "left leg", "right leg", "reproductive"];
+        const matched = parts.find(p => voiceText.includes(p));
+        if (matched) {
+          showInfo(matched);
+        } else {
+          speak("Body part not recognized. Try again.");
+        }
+      };
+
+      recognition.onerror = function(event) {
+        speak("Voice recognition error. Please try again.");
+      };
     }
   </script>
 </body>
