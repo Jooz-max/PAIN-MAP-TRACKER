@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>Pain Map Tracker</title>
   <style>
+    /* Your styles remain unchanged */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
@@ -106,8 +107,6 @@
     .voice-button:hover {
       background-color: #512da8;
     }
-
-    /* View Saved Entries Button */
     .view-button {
       position: absolute;
       top: 20px;
@@ -115,18 +114,15 @@
       z-index: 3;
       padding: 16px 24px;
       font-size: 20px;
-      background-color: #ff4b69; /* Strawberry color */
+      background-color: #ff4b69;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
-
     .view-button:hover {
       background-color: #ff2e52;
     }
-
-    /* Save Popup style */
     #savePopup {
       position: fixed;
       bottom: 100px;
@@ -143,8 +139,6 @@
       font-size: 20px;
       display: none;
     }
-
-    /* List saved entries */
     #savedEntries {
       position: absolute;
       top: 30%;
@@ -165,7 +159,6 @@
 <body>
   <div class="main-wrapper">
     <img src="boy.png" alt="Body Diagram" class="body-image">
-
     <div class="part-buttons">
       <button onclick="showInfo('Head')">Head</button>
       <button onclick="showInfo('Neck')">Neck</button>
@@ -176,23 +169,14 @@
       <button onclick="showInfo('Right Leg')">Right Leg</button>
       <button onclick="showInfo('Reproductive')">Reproductive Area</button>
     </div>
-
     <div id="infoBox" class="info-box"></div>
-
     <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
-
     <div class="button-container">
       <button onclick="saveEntry()">Save Entry</button>
       <button onclick="history.back()">Back</button>
     </div>
-
-    <!-- View Saved Entries Button -->
     <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
-
-    <!-- Save Popup -->
     <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
-
-    <!-- Saved Entries List -->
     <div id="savedEntries">
       <h3>Saved Entries:</h3>
       <ul id="entriesList"></ul>
@@ -200,8 +184,6 @@
   </div>
 
   <script>
-    let savedEntries = [];
-
     function speak(text) {
       const message = new SpeechSynthesisUtterance(text);
       message.rate = 1;
@@ -216,7 +198,6 @@
       let problem = "";
       let suggestion = "";
       let color = "";
-
       switch(part.toLowerCase()) {
         case "head":
           problem = "Persistent headache or pressure";
@@ -247,27 +228,6 @@
           color = "#4caf50";
           break;
         case "reproductive":
-        case "reproductive area":
-          problem = "Pain or discomfort in reproductive area.";
-          suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
-          color = "#9c27b0";
-
-          color = "#03a9f4";
-          break;
-        case "left arm":
-        case "right arm":
-          problem = "Arm fatigue or pain";
-          suggestion = "Stretch, avoid heavy strain, rest if sore.";
-          color = "#ffc107";
-          break;
-        case "left leg":
-        case "right leg":
-          problem = "Leg soreness or heaviness";
-          suggestion = "Elevate, gently massage, rest after walking.";
-          color = "#4caf50";
-          break;
-        case "reproductive":
-        case "reproductive area":
           problem = "Pain or discomfort in reproductive area.";
           suggestion = "Consult a doctor, maintain hygiene, wear comfortable clothes.";
           color = "#9c27b0";
@@ -277,77 +237,60 @@
           suggestion = "Try selecting a different part.";
           color = "#607d8b";
       }
-
-      const message = `${part}: ${problem}. ${suggestion}`;
-      infoBox.style.backgroundColor = color;
-      infoBox.textContent = message;
-      speak(message);
+      infoBox.innerHTML = `
+        <div style="color:${color};">🩺 Problem: ${problem}</div>
+        <div style="margin-top:10px;">💡 Suggestion: ${suggestion}</div>
+      `;
+      speak(problem + ". " + suggestion);
     }
+  </script>
 
-    function startVoice() {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert("Sorry, your browser doesn't support voice recognition.");
-        return;
+  <!-- Firebase & Save Function Scripts Inserted Here -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
+      authDomain: "pain-map-tracker.firebaseapp.com",
+      projectId: "pain-map-tracker",
+      storageBucket: "pain-map-tracker.appspot.com",
+      messagingSenderId: "1033877333158",
+      appId: "1:1033877333158:web:f68963a3b37e6a24c38067",
+      measurementId: "G-720JSK3F66"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window.firestoreDB = db;
+  </script>
+
+  <script>
+    async function saveEntryToFirestore(infoText) {
+      const db = window.firestoreDB;
+      try {
+        await addDoc(collection(db, "pain_entries"), {
+          text: infoText,
+          timestamp: new Date()
+        });
+        const popup = document.getElementById("savePopup");
+        const time = new Date().toLocaleString();
+        document.getElementById("saveTime").textContent = time;
+        popup.style.display = "block";
+        setTimeout(() => popup.style.display = "none", 3000);
+      } catch (e) {
+        alert("Error saving entry: " + e.message);
       }
-
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = 'en-US';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.start();
-
-      recognition.onresult = function(event) {
-        const spoken = event.results[0][0].transcript.toLowerCase();
-        console.log("Voice Input:", spoken);
-
-        if (spoken.includes("head")) showInfo("Head");
-        else if (spoken.includes("neck")) showInfo("Neck");
-        else if (spoken.includes("torso") || spoken.includes("chest") || spoken.includes("respiratory")) showInfo("Torso");
-        else if (spoken.includes("left arm")) showInfo("Left Arm");
-        else if (spoken.includes("right arm")) showInfo("Right Arm");
-        else if (spoken.includes("left leg")) showInfo("Left Leg");
-        else if (spoken.includes("right leg")) showInfo("Right Leg");
-        else if (spoken.includes("reproductive") || spoken.includes("private") || spoken.includes("area")) showInfo("Reproductive");
-        else speak("Sorry, I didn't recognize that part. Please try again.");
-      };
-
-      recognition.onerror = function(event) {
-        console.error("Voice recognition error:", event.error);
-        speak("There was an error with voice input. Please try again.");
-      };
     }
 
     function saveEntry() {
-      const popup = document.getElementById("savePopup");
-      const time = new Date();
-      const formattedTime = time.toLocaleString();
-      document.getElementById("saveTime").textContent = formattedTime;
-
-      savedEntries.push({ time: formattedTime, entry: document.getElementById("infoBox").textContent });
-
-      popup.style.display = "block";
-      speak(`Entry saved on ${formattedTime}`);
-
-      setTimeout(() => {
-        popup.style.display = "none";
-      }, 3000);
+      const info = document.getElementById("infoBox").textContent.trim();
+      if (info === "") {
+        alert("Please select a body part first.");
+        return;
+      }
+      saveEntryToFirestore(info);
     }
-
-    function viewSavedEntries() {
-      const savedEntriesDiv = document.getElementById("savedEntries");
-      const entriesList = document.getElementById("entriesList");
-      entriesList.innerHTML = ""; // Clear previous list
-
-      savedEntries.forEach(entry => {
-        const li = document.createElement("li");
-        li.textContent = `Saved on: ${entry.time} - ${entry.entry}`;
-        entriesList.appendChild(li);
-      });
-
-      savedEntriesDiv.style.display = "block";
-    }
-
   </script>
 </body>
 </html>
