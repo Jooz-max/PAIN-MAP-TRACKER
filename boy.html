@@ -349,54 +349,5 @@
     }
 
   </script>
-<script type="module">
-    // Firebase SDK imports
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
-      authDomain: "pain-map-tracker.firebaseapp.com",
-      projectId: "pain-map-tracker",
-      storageBucket: "pain-map-tracker.appspot.com",
-      messagingSenderId: "1033877333158",
-      appId: "1:1033877333158:web:f68963a3b37e6a24c38067",
-      measurementId: "G-720JSK3F66"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    // Make Firestore accessible to global scope
-    window.firestoreDB = db;
-  </script>
-
-  <script>
-    async function saveEntryToFirestore(infoText) {
-      const db = window.firestoreDB;
-      try {
-        await addDoc(collection(db, "pain_entries"), {
-          text: infoText,
-          timestamp: new Date() // You may change this to serverTimestamp()
-        });
-        const popup = document.getElementById("savePopup");
-        const time = new Date().toLocaleString();
-        document.getElementById("saveTime").textContent = time;
-        popup.style.display = "block";
-        setTimeout(() => popup.style.display = "none", 3000);
-      } catch (e) {
-        alert("Error saving entry: " + e.message);
-      }
-    }
-
-    function saveEntry() {
-      const info = document.getElementById("infoBox").textContent.trim();
-      if (info === "") {
-        alert("Please select a body part first.");
-        return;
-      }
-      saveEntryToFirestore(info);
-    }
-  </script>
 </body>
 </html>
