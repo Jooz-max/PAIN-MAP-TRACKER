@@ -8,9 +8,8 @@
     body {
       font-family: sans-serif;
       background-color: #f0f0f0;
-      height: 90vh;
+      height: 100vh;
       overflow: hidden;
-      position: relative;
     }
     .main-wrapper {
       position: relative;
@@ -48,9 +47,7 @@
       color: white;
       cursor: pointer;
     }
-    .part-buttons button:hover {
-      background-color: #0056b3;
-    }
+    .part-buttons button:hover { background-color: #0056b3; }
     .info-box {
       position: absolute;
       bottom: 160px;
@@ -86,9 +83,7 @@
       color: white;
       cursor: pointer;
     }
-    .button-container button:hover {
-      background-color: #1e7e34;
-    }
+    .button-container button:hover { background-color: #1e7e34; }
     .voice-button, .view-button {
       position: absolute;
       top: 20px;
@@ -128,13 +123,33 @@
       z-index: 4;
       background-color: #ffffff;
       font-size: 18px;
-      font-weight: bold;
       padding: 15px;
       border-radius: 8px;
       max-width: 90%;
+      max-height: 50%;
+      overflow-y: auto;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       display: none;
     }
+    #savedEntries ul { list-style: none; padding: 0; }
+    #savedEntries li {
+      margin-bottom: 12px;
+      background: #f8f9fa;
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .delete-button {
+      background: #dc3545;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .delete-button:hover { background: #c82333; }
   </style>
 </head>
 <body>
@@ -172,13 +187,7 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import {
-      getFirestore,
-      collection,
-      addDoc,
-      getDocs,
-      deleteDoc,
-      doc,
-      serverTimestamp
+      getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     const firebaseConfig = {
@@ -194,82 +203,125 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const painData = {
-      "Head": { case: "Frequent headaches or migraines", problem: "May be due to dehydration, stress, or eye strain.", suggestion: "Drink water, reduce screen time, take breaks, consult a doctor if persistent." },
-      "Neck": { case: "Neck stiffness or soreness", problem: "Often caused by poor posture or sleeping position.", suggestion: "Apply heat, improve posture, consider neck exercises." },
-      "Torso": { case: "Chest or lung-related discomfort", problem: "Could indicate respiratory infection or muscle strain.", suggestion: "Rest, stay hydrated, seek medical attention if severe or painful." },
-      "Left Arm": { case: "Left arm weakness or tingling", problem: "Could be due to poor circulation or pinched nerve.", suggestion: "Stretch arm gently, monitor for heart-related symptoms." },
-      "Right Arm": { case: "Muscle pain from overuse", problem: "May be caused by repetitive motion or lifting.", suggestion: "Apply ice, rest the arm, avoid strain." },
-      "Left Leg": { case: "Pain while walking or numbness", problem: "Can result from poor circulation or nerve compression.", suggestion: "Elevate leg, avoid long sitting, gentle exercise." },
-      "Right Leg": { case: "Cramping or sharp pain", problem: "Possibly dehydration or overexertion.", suggestion: "Hydrate, gently massage, stretch calf muscles." },
-      "Reproductive": { case: "Pain in the reproductive area", problem: "Might be due to infection, cramps, or other conditions.", suggestion: "Monitor symptoms, use heat therapy, consult a specialist." }
+    const bodyPartDetails = {
+      "Head": {
+        case: "You reported pain in the head.",
+        advice: "Consider resting, hydrating, and monitoring for symptoms like dizziness or vision changes."
+      },
+      "Neck": {
+        case: "You reported pain in the neck.",
+        advice: "Stretch gently, avoid straining, and apply warm compresses if needed."
+      },
+      "Torso": {
+        case: "You reported respiratory or torso discomfort.",
+        advice: "Breathe slowly, avoid heavy exertion, and consult a professional if pain persists."
+      },
+      "Left Arm": {
+        case: "You reported pain in the left arm.",
+        advice: "Check for any swelling or numbness. If chest pain is present, seek immediate help."
+      },
+      "Right Arm": {
+        case: "You reported pain in the right arm.",
+        advice: "Stretch or rest your arm and apply ice if there is inflammation."
+      },
+      "Left Leg": {
+        case: "You reported pain in the left leg.",
+        advice: "Elevate the leg and avoid standing too long. Monitor for cramps or redness."
+      },
+      "Right Leg": {
+        case: "You reported pain in the right leg.",
+        advice: "Stretch, rest, and hydrate. Apply warm or cold packs as needed."
+      },
+      "Reproductive": {
+        case: "You reported pain in the reproductive area.",
+        advice: "Monitor symptoms closely. Consult a healthcare provider for proper evaluation."
+      }
     };
 
     window.showInfo = function (part) {
-      const info = painData[part];
+      const info = bodyPartDetails[part];
       if (info) {
-        document.getElementById("infoBox").innerHTML = `
-          <strong>Part:</strong> ${part}
-          <strong>Case:</strong> ${info.case}
-          <strong>Problem:</strong> ${info.problem}
-          <strong>Suggestion:</strong> ${info.suggestion}
-        `;
+        document.getElementById("infoBox").innerHTML =
+          `<strong>${info.case}</strong><br>${info.advice}`;
       }
     };
 
     window.saveEntry = async function () {
-      const info = document.getElementById("infoBox").textContent.trim();
-      if (info === "") {
-        alert("Please select a body part first.");
+      const infoText = document.getElementById("infoBox").innerText;
+      if (!infoText) {
+        alert("⚠️ Please select a body part before saving.");
         return;
       }
 
+      const now = new Date();
+      const localTime = now.toLocaleString();
+
       try {
-        const now = new Date();
-        const entry = {
-          text: info,
-          timestamp: serverTimestamp(),
-          localTime: now.toLocaleString()
-        };
+        await addDoc(collection(db, "pain_entries"), {
+          text: infoText,
+          localTime: localTime,
+          timestamp: serverTimestamp()
+        });
 
-        await addDoc(collection(db, "pain_entries"), entry);
-
-        document.getElementById("saveTime").textContent = entry.localTime;
+        document.getElementById("saveTime").innerText = localTime;
         const popup = document.getElementById("savePopup");
         popup.style.display = "block";
-        setTimeout(() => popup.style.display = "none", 3000);
-      } catch (error) {
-        alert("Error saving entry: " + error.message);
+        setTimeout(() => { popup.style.display = "none"; }, 2500);
+      } catch (err) {
+        alert("Error saving entry: " + err.message);
       }
     };
 
     window.viewSavedEntries = async function () {
       const entriesList = document.getElementById("entriesList");
       entriesList.innerHTML = "";
-
-      const querySnapshot = await getDocs(collection(db, "pain_entries"));
-      querySnapshot.forEach((docSnap) => {
+      const snapshot = await getDocs(collection(db, "pain_entries"));
+      snapshot.forEach((docSnap) => {
         const li = document.createElement("li");
-        li.innerHTML = `
-          ${docSnap.data().localTime}<br>
-          ${docSnap.data().text}
-          <button style="margin-left: 10px; color: white; background: red; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;"
-            onclick="deleteEntry('${docSnap.id}')">🗑️ Delete</button>
-        `;
+        li.textContent = `${docSnap.data().text} (Saved: ${docSnap.data().localTime})`;
+
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.className = "delete-button";
+        delBtn.onclick = async () => {
+          await deleteDoc(doc(db, "pain_entries", docSnap.id));
+          viewSavedEntries();
+        };
+
+        li.appendChild(delBtn);
         entriesList.appendChild(li);
       });
-
       document.getElementById("savedEntries").style.display = "block";
     };
+  </script>
 
-    window.deleteEntry = async function (entryId) {
-      try {
-        await deleteDoc(doc(db, "pain_entries", entryId));
-        viewSavedEntries(); // Refresh the list
-      } catch (error) {
-        alert("Error deleting entry: " + error.message);
+  <script>
+    function startVoice() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) {
+        alert("Speech recognition not supported in this browser.");
+        return;
       }
-    };
+
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+      recognition.start();
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript.toLowerCase();
+        if (transcript.includes("head")) showInfo("Head");
+        else if (transcript.includes("neck")) showInfo("Neck");
+        else if (transcript.includes("respiratory") || transcript.includes("chest")) showInfo("Torso");
+        else if (transcript.includes("left arm")) showInfo("Left Arm");
+        else if (transcript.includes("right arm")) showInfo("Right Arm");
+        else if (transcript.includes("left leg")) showInfo("Left Leg");
+        else if (transcript.includes("right leg")) showInfo("Right Leg");
+        else if (transcript.includes("reproductive") || transcript.includes("private")) showInfo("Reproductive");
+        else alert("Unrecognized part: " + transcript);
+      };
+    }
   </script>
 </body>
-  </html>
+</html>￼
