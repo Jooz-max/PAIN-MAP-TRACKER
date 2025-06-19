@@ -183,7 +183,6 @@
     </div>
   </div>
 
-  <!-- Firebase Script Module -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
@@ -239,7 +238,6 @@
     };
   </script>
 
-  <!-- Non-module Script: Voice + Info Logic -->
   <script>
     function speak(text) {
       const message = new SpeechSynthesisUtterance(text);
@@ -301,16 +299,13 @@
       recognition.onresult = function(event) {
         const voiceText = event.results[0][0].transcript.toLowerCase();
         const parts = ["head", "neck", "torso", "respiratory", "left arm", "right arm", "left leg", "right leg", "reproductive"];
-        const matched = parts.find(p => voiceText.includes(p));
-        if (matched) {
-          showInfo(matched);
-        } else {
-          speak("Body part not recognized. Try again.");
+        for (const part of parts) {
+          if (voiceText.includes(part)) {
+            showInfo(part);
+            return;
+          }
         }
-      };
-
-      recognition.onerror = function(event) {
-        speak("Voice recognition error. Please try again.");
+        speak("Sorry, I didn't recognize that body part.");
       };
     }
   </script>
