@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
   <style>
-    /* All your original styles remain unchanged */
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* Keep all your original styles (unchanged) */
+* { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
       background-color: #f0f0f0;
@@ -166,36 +166,86 @@
     }
     .delete-button:hover {
       background-color: #c82333;
+  }
+   .auth-box {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      padding: 20px 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      z-index: 999;
+      text-align: center;
     }
+    .auth-box input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .auth-box button {
+      padding: 12px 30px;
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+    }
+    .auth-toggle {
+      font-size: 14px;
+      margin-top: 10px;
+      cursor: pointer;
+      color: #007bff;
+      text-decoration: underline;
+    }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
   <div class="main-wrapper">
     <img src="boy.png" alt="Body Diagram" class="body-image">
-    <div class="part-buttons">
-      <button onclick="showInfo('Head')">Head</button>
-      <button onclick="showInfo('Neck')">Neck</button>
-      <button onclick="showInfo('Torso')">Respiratory</button>
-      <button onclick="showInfo('Left Arm')">Left Arm</button>
-      <button onclick="showInfo('Right Arm')">Right Arm</button>
-      <button onclick="showInfo('Left Leg')">Left Leg</button>
-      <button onclick="showInfo('Right Leg')">Right Leg</button>
-      <button onclick="showInfo('Reproductive')">Reproductive Area</button>
+
+    <div id="authSection" class="auth-box">
+      <h2 id="authTitle">Login</h2>
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button onclick="handleAuth()">Login</button>
+      <div class="auth-toggle" onclick="toggleAuthMode()">Don't have an account? Sign up</div>
     </div>
 
-    <div id="infoBox" class="info-box"></div>
-    <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
+    <div id="appContent" class="hidden">
+      <div class="part-buttons">
+        <button onclick="showInfo('Head')">Head</button>
+        <button onclick="showInfo('Neck')">Neck</button>
+        <button onclick="showInfo('Torso')">Respiratory</button>
+        <button onclick="showInfo('Left Arm')">Left Arm</button>
+        <button onclick="showInfo('Right Arm')">Right Arm</button>
+        <button onclick="showInfo('Left Leg')">Left Leg</button>
+        <button onclick="showInfo('Right Leg')">Right Leg</button>
+        <button onclick="showInfo('Reproductive')">Reproductive Area</button>
+      </div>
 
-    <div class="button-container">
-      <button onclick="saveEntry()">Save Entry</button>
-      <button onclick="history.back()">Back</button>
-    </div>
+      <div id="infoBox" class="info-box"></div>
+      <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
 
-    <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
-    <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
-    <div id="savedEntries">
-      <h3>Saved Entries:</h3>
-      <ul id="entriesList"></ul>
+      <div class="button-container">
+        <button onclick="saveEntry()">Save Entry</button>
+        <button onclick="history.back()">Back</button>
+      </div>
+
+      <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
+      <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
+      <div id="savedEntries">
+        <h3>Saved Entries:</h3>
+        <ul id="entriesList"></ul>
+      </div>
     </div>
   </div>
 
@@ -204,6 +254,9 @@
     import {
       getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import {
+      getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
@@ -217,6 +270,7 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+    const auth = getAuth();
 
     const bodyPartDetails = {
       "Head": {
@@ -307,49 +361,45 @@
       viewSavedEntries();
     };
 
-    window.startVoice = function () {
-      if (!('webkitSpeechRecognition' in window)) {
-        alert("Your browser doesn't support speech recognition.");
-        return;
-      }
+    // Auth logic
+    let isLogin = true;
 
-      const recognition = new webkitSpeechRecognition();
-      recognition.lang = "en-US";
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
-
-      recognition.start();
-
-      recognition.onresult = function (event) {
-        const transcript = event.results[0][0].transcript.toLowerCase();
-
-        if (transcript.includes("head")) {
-          showInfo("Head");
-        } else if (transcript.includes("neck")) {
-          showInfo("Neck");
-        } else if (transcript.includes("torso") || transcript.includes("respiratory")) {
-          showInfo("Torso");
-        } else if (transcript.includes("left arm")) {
-          showInfo("Left Arm");
-        } else if (transcript.includes("right arm")) {
-          showInfo("Right Arm");
-        } else if (transcript.includes("left leg")) {
-          showInfo("Left Leg");
-        } else if (transcript.includes("right leg")) {
-          showInfo("Right Leg");
-        } else if (transcript.includes("reproductive")) {
-          showInfo("Reproductive");
-        } else if (transcript.includes("save")) {
-          saveEntry();
-        } else {
-          speak("Sorry, I didn't catch that. Please say a body part or save.");
-        }
-      };
-
-      recognition.onerror = function (event) {
-        alert("Speech recognition error: " + event.error);
-      };
+    window.toggleAuthMode = function () {
+      isLogin = !isLogin;
+      document.getElementById("authTitle").textContent = isLogin ? "Login" : "Sign Up";
+      document.querySelector(".auth-box button").textContent = isLogin ? "Login" : "Sign Up";
+      document.querySelector(".auth-toggle").textContent = isLogin
+        ? "Don't have an account? Sign up"
+        : "Already have an account? Login";
     };
+
+    window.handleAuth = function () {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      if (isLogin) {
+        signInWithEmailAndPassword(auth, email, password)
+          .then(() => {
+            showApp();
+          })
+          .catch(err => alert(err.message));
+      } else {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(() => {
+            showApp();
+          })
+          .catch(err => alert(err.message));
+      }
+    };
+
+    function showApp() {
+      document.getElementById("authSection").classList.add("hidden");
+      document.getElementById("appContent").classList.remove("hidden");
+    }
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) showApp();
+    });
   </script>
 </body>
-</html>
+        </html>
