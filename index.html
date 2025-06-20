@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html><html>
 <head>
   <title>Pain Map Tracker</title>
   <link rel="stylesheet" href="style.css">
@@ -13,40 +12,25 @@
       ╔══════════════════════════╗<br>
       ║&nbsp;&nbsp;PAIN MAP TRACKER&nbsp;&nbsp;║<br>
       ╚══════════════════════════╝
-    </div>
+    </div><div class="button-container">
+  <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>
+  <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>
+  <button class="btn" onclick="showSettings()">⚙️ SETTINGS</button>
+</div>
 
-    <div class="button-container">
-      <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>
-      <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>
-      <button class="btn" onclick="showSettings()">⚙️ SETTINGS</button>
-    </div>
+<div class="motivation">
+  <p>"HOW ARE YOU FEELING TODAY?"</p>
+  <p>"A healthy you is a powerful you."</p>
+  <p>"Let’s track how you feel."</p>
+</div>
 
-    <div class="motivation">
-      <p>"HOW ARE YOU FEELING TODAY?"</p>
-      <p>"A healthy you is a powerful you."</p>
-      <p>"Let’s track how you feel."</p>
-    </div>
-
-    <!-- Pain Log Input Form -->
-    <div class="pain-log-form">
-      <h3>📋 Add Pain Log</h3>
-      <input type="text" id="location" placeholder="Pain location">
-      <input type="number" id="intensity" placeholder="Intensity (1-10)">
-      <button class="btn" onclick="submitPainLog()">➕ Submit Pain Log</button>
-    </div>
-  </div>
-
-  <!-- Hidden Password Box -->
-  <div class="info-box" id="settingsBox" style="display: none;">
+  </div>  <!-- Hidden Password Box -->  <div class="info-box" id="settingsBox" style="display: none;">
     <h2>⚠️ Developer Access Only</h2>
     <p>This settings button is only used by the developer.<br>Enter the password to continue:</p>
     <input type="password" id="devPass" placeholder="Enter password">
     <br>
     <button class="btn" onclick="checkPassword()">Submit</button>
-  </div>
-
-  <!-- Hidden Developer Panel -->
-  <div class="dev-panel" id="devPanel" style="display: none;">
+  </div>  <!-- Hidden Developer Panel -->  <div class="dev-panel" id="devPanel" style="display: none;">
     <h3>🛠 Developer Control Panel</h3>
     <button class="btn" onclick="updateFromGitHub()">🔄 Update Pain Map Tracker</button>
     <button class="btn" onclick="backupLogsToFirebase()">☁️ Backup System Logs</button>
@@ -54,9 +38,7 @@
     <button class="btn" onclick="syncDevices()">📶 Device Sync</button>
     <br><br>
     <button class="btn" onclick="hideDevPanel()">❌ Close Settings</button>
-  </div>
-
-  <script>
+  </div>  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
       authDomain: "pain-map-tracker.firebaseapp.com",
@@ -85,7 +67,7 @@
 
     function checkPassword() {
       const input = document.getElementById("devPass").value;
-      const correct = "(Bonang100)";
+      const correct = "(Bonang00)";
       if (input === correct) {
         document.getElementById("settingsBox").style.display = "none";
         document.getElementById("devPanel").style.display = "block";
@@ -121,49 +103,117 @@
     function syncDevices() {
       alert("Syncing device data...");
     }
-
-    // ========== Pain Log Logic ==========
-    let painLogs = [];
-
-    function submitPainLog() {
-      const locationInput = document.getElementById("location").value.trim();
-      const intensityInput = document.getElementById("intensity").value;
-
-      if (!locationInput) {
-        alert("Please enter a pain location.");
-        return;
-      }
-
-      const intensity = parseInt(intensityInput, 10);
-      if (isNaN(intensity) || intensity < 1 || intensity > 10) {
-        alert("Please enter a valid pain intensity between 1 and 10.");
-        return;
-      }
-
-      const newLog = {
-        location: locationInput,
-        intensity: intensity,
-        timestamp: new Date().toISOString()
-      };
-
-      painLogs.push(newLog);
-      savePainLogToFirestore(newLog);
-      alert("Pain log added successfully!");
-
-      // Clear input fields
-      document.getElementById("location").value = "";
-      document.getElementById("intensity").value = "";
-    }
-
-    function savePainLogToFirestore(log) {
-      db.collection("painLogs").add(log)
-        .then(() => {
-          console.log("Pain log saved to Firestore");
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-        });
-    }
-  </script>
+  </script><div class="footer">
+  Created by: Tlhonolofatso Hlopho
+</div>
 </body>
-    </html>
+</html><!DOCTYPE html><html>
+<head>
+  <title>Pain Map Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="box">
+    <div class="title">
+      ╔══════════════════════════╗<br>
+      ║&nbsp;&nbsp;PAIN MAP TRACKER&nbsp;&nbsp;║<br>
+      ╚══════════════════════════╝
+    </div><div class="button-container">
+  <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>
+  <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>
+  <button class="btn" onclick="showSettings()">⚙️ SETTINGS</button>
+</div>
+
+<div class="motivation">
+  <p>"HOW ARE YOU FEELING TODAY?"</p>
+  <p>"A healthy you is a powerful you."</p>
+  <p>"Let’s track how you feel."</p>
+</div>
+
+  </div>  <!-- Hidden Password Box -->  <div class="info-box" id="settingsBox" style="display: none;">
+    <h2>⚠️ Developer Access Only</h2>
+    <p>This settings button is only used by the developer.<br>Enter the password to continue:</p>
+    <input type="password" id="devPass" placeholder="Enter password">
+    <br>
+    <button class="btn" onclick="checkPassword()">Submit</button>
+  </div>  <!-- Hidden Developer Panel -->  <div class="dev-panel" id="devPanel" style="display: none;">
+    <h3>🛠 Developer Control Panel</h3>
+    <button class="btn" onclick="updateFromGitHub()">🔄 Update Pain Map Tracker</button>
+    <button class="btn" onclick="backupLogsToFirebase()">☁️ Backup System Logs</button>
+    <button class="btn" onclick="viewEncryptedLogs()">📁 View Encrypted Logs</button>
+    <button class="btn" onclick="syncDevices()">📶 Device Sync</button>
+    <br><br>
+    <button class="btn" onclick="hideDevPanel()">❌ Close Settings</button>
+  </div>  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
+      authDomain: "pain-map-tracker.firebaseapp.com",
+      projectId: "pain-map-tracker",
+      storageBucket: "pain-map-tracker.appspot.com",
+      messagingSenderId: "1033877333158",
+      appId: "1:1033877333158:web:f68963a3b37e6a24c38067",
+      measurementId: "G-720JSK3F66"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const storage = firebase.storage();
+    const db = firebase.firestore();
+
+    function goTo(gender) {
+      if (gender === 'boy') {
+        window.location.href = "boy.html";
+      } else if (gender === 'girl') {
+        window.location.href = "girl.html";
+      }
+    }
+
+    function showSettings() {
+      document.getElementById("settingsBox").style.display = "block";
+    }
+
+    function checkPassword() {
+      const input = document.getElementById("devPass").value;
+      const correct = "(Bonang00)";
+      if (input === correct) {
+        document.getElementById("settingsBox").style.display = "none";
+        document.getElementById("devPanel").style.display = "block";
+      } else {
+        alert("Access denied.");
+      }
+    }
+
+    function hideDevPanel() {
+      document.getElementById("devPanel").style.display = "none";
+    }
+
+    function updateFromGitHub() {
+      alert("Fetching latest update from GitHub...");
+      window.open("https://github.com/your-repo/PainMapTracker", "_blank");
+    }
+
+    function backupLogsToFirebase() {
+      const logContent = "System Logs: [sample data here]";
+      const file = new File([logContent], "logs_" + Date.now() + ".txt", { type: "text/plain" });
+      const storageRef = storage.ref("logs/" + file.name);
+      storageRef.put(file).then(() => {
+        alert("Logs backed up to Firebase!");
+      }).catch((err) => {
+        alert("Backup failed: " + err.message);
+      });
+    }
+
+    function viewEncryptedLogs() {
+      alert("Encrypted logs viewer coming soon!");
+    }
+
+    function syncDevices() {
+      alert("Syncing device data...");
+    }
+  </script><div class="footer">
+  Created by: Tlhonolofatso Hlopho
+</div>
+</body>
+  </html>
