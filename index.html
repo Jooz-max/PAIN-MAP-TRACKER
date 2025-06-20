@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!<!DOCTYPE html>
 <html>  
 <head>  
   <title>Health Assistant</title>  
@@ -15,7 +15,7 @@
     <div class="button-container">  
       <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>  
       <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>  
-      <button class="btn" onclick="goTo('settings')">⚙️ SETTINGS</button>
+      <button class="btn" onclick="showSettings()">⚙️ SETTINGS</button>
     </div>  
 
     <div class="motivation">  
@@ -25,6 +25,38 @@
     </div>  
   </div>  
 
-  <script src="script.js"></script>  
+  <!-- Hidden Developer Settings Box -->
+  <div class="info-box" id="settingsBox" style="display: none;">
+    <h2>⚠️ Developer Access Only</h2>
+    <p>This settings button is only used by the developer.<br>Enter the password to continue:</p>
+    <input type="password" id="devPass" placeholder="Enter password">
+    <br>
+    <button onclick="checkPassword()">Submit</button>
+  </div>
+
+  <script>
+    function goTo(gender) {
+      if (gender === 'boy') {
+        window.location.href = "boy.html";
+      } else if (gender === 'girl') {
+        window.location.href = "girl.html";
+      }
+    }
+
+    function showSettings() {
+      document.getElementById("settingsBox").style.display = "block";
+    }
+
+    function checkPassword() {
+      const input = document.getElementById("devPass").value;
+      const correct = "1234"; // Change this to your real password
+      if (input === correct) {
+        alert("Access granted!");
+        // Optional: window.location.href = "developer-panel.html";
+      } else {
+        alert("Access denied.");
+      }
+    }
+  </script>  
 </body>  
-        </html>
+</html>￼Enter
