@@ -1,4 +1,4 @@
-* * {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -32,32 +32,35 @@ body {
 }
 
 .title {
-  font-size: 22px;
+  font-size: 30px; /* Increased from 22px */
   font-weight: bold;
   background-color: #3498db;
   color: white;
-  padding: 15px;
+  padding: 20px; /* Increased padding */
   border-radius: 10px;
-  margin-bottom: 25px;
-  line-height: 1.5;
+  margin-bottom: 30px; /* Increased margin */
+  line-height: 1.6;
 }
 
 .button-container {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 25px;
+  flex-wrap: wrap;
+  gap: 15px; /* Added gap for spacing */
+  margin-bottom: 30px;
 }
 
 .btn {
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 18px 28px; /* Increased padding */
+  font-size: 20px; /* Increased font size */
   font-weight: bold;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   cursor: pointer;
   background-color: #3498db;
   color: white;
   transition: 0.3s;
+  min-width: 150px;
 }
 
 .btn:hover {
@@ -65,8 +68,8 @@ body {
 }
 
 .motivation {
-  margin-top: 10px;
-  font-size: 16px;
+  margin-top: 20px;
+  font-size: 20px; /* Increased font size */
   color: #2c3e50;
-  line-height: 1.6;
-}￼Enter
+  line-height: 1.8;
+}
