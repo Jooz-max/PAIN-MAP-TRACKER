@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
-    <style>
-    /* Styling code remains unchanged */
+  <style>
+    /* All your original styles remain unchanged */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
@@ -154,8 +154,21 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       display: none;
     }
+    .delete-button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      font-size: 16px;
+      color: white;
+      background-color: #dc3545;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .delete-button:hover {
+      background-color: #c82333;
+    }
   </style>
-  </head>
+</head>
 <body>
   <div class="main-wrapper">
     <img src="boy.png" alt="Body Diagram" class="body-image">
@@ -294,7 +307,6 @@
       viewSavedEntries();
     };
 
-    // ✅ Voice input function
     window.startVoice = function () {
       if (!('webkitSpeechRecognition' in window)) {
         alert("Your browser doesn't support speech recognition.");
@@ -309,22 +321,33 @@
       recognition.start();
 
       recognition.onresult = function (event) {
-        const speechResult = event.results[0][0].transcript.toLowerCase();
-        console.log("Voice Input:", speechResult);
+        const transcript = event.results[0][0].transcript.toLowerCase();
 
-        if (speechResult.includes("head")) showInfo("Head");
-        else if (speechResult.includes("neck")) showInfo("Neck");
-        else if (speechResult.includes("torso") || speechResult.includes("chest") || speechResult.includes("lungs")) showInfo("Torso");
-        else if (speechResult.includes("left arm")) showInfo("Left Arm");
-        else if (speechResult.includes("right arm")) showInfo("Right Arm");
-        else if (speechResult.includes("left leg")) showInfo("Left Leg");
-        else if (speechResult.includes("right leg")) showInfo("Right Leg");
-        else if (speechResult.includes("reproductive") || speechResult.includes("private")) showInfo("Reproductive");
-        else speak("I didn't catch a valid body part. Please try again.");
+        if (transcript.includes("head")) {
+          showInfo("Head");
+        } else if (transcript.includes("neck")) {
+          showInfo("Neck");
+        } else if (transcript.includes("torso") || transcript.includes("respiratory")) {
+          showInfo("Torso");
+        } else if (transcript.includes("left arm")) {
+          showInfo("Left Arm");
+        } else if (transcript.includes("right arm")) {
+          showInfo("Right Arm");
+        } else if (transcript.includes("left leg")) {
+          showInfo("Left Leg");
+        } else if (transcript.includes("right leg")) {
+          showInfo("Right Leg");
+        } else if (transcript.includes("reproductive")) {
+          showInfo("Reproductive");
+        } else if (transcript.includes("save")) {
+          saveEntry();
+        } else {
+          speak("Sorry, I didn't catch that. Please say a body part or save.");
+        }
       };
 
       recognition.onerror = function (event) {
-        speak("Error recognizing speech: " + event.error);
+        alert("Speech recognition error: " + event.error);
       };
     };
   </script>
