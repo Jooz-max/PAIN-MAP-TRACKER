@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
   <style>
+    /* [Styles unchanged] */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
@@ -156,7 +156,6 @@
 <body>
   <div class="main-wrapper">
     <img src="boy.png" alt="Body Diagram" class="body-image">
-
     <div class="part-buttons">
       <button onclick="showInfo('Head')">Head</button>
       <button onclick="showInfo('Neck')">Neck</button>
@@ -169,7 +168,6 @@
     </div>
 
     <div id="infoBox" class="info-box"></div>
-
     <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
 
     <div class="button-container">
@@ -179,7 +177,6 @@
 
     <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
     <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
-
     <div id="savedEntries">
       <h3>Saved Entries:</h3>
       <ul id="entriesList"></ul>
@@ -240,79 +237,87 @@
       }
     };
 
+    function speak(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      speechSynthesis.speak(utterance);
+    }
+
     window.showInfo = function (part) {
       const info = bodyPartDetails[part];
       if (info) {
+        const message = `${info.case} ${info.advice}`;
         document.getElementById("infoBox").innerHTML =
           `<strong>${info.case}</strong><br>${info.advice}`;
+        speak(message);
       }
     };
 
     window.saveEntry = async function () {
-      const infoText = document.getElementById("infoBox").innerText;
-      if (!infoText) {
-        alert("⚠️ Please select a body part before saving.");
-        return;
-      }
+      const infoText = document.getElementById("infoBox").innerHTML;
+      if (!infoText.trim()) return;
 
-      const now = new Date();
-      const localTime = now.toLocaleString();
+      await addDoc(collection(db, "painEntries"), {
+        content: infoText,
+        timestamp: serverTimestamp()
+      });
 
-      try {
-        await addDoc(collection(db, "pain_entries"), {
-          text: infoText,
-          localTime: localTime,
-          timestamp: serverTimestamp()
-        });
-
-        document.getElementById("saveTime").innerText = localTime;
-        const popup = document.getElementById("savePopup");
-        popup.style.display = "block";
-        setTimeout(() => popup.style.display = "none", 3000);
-      } catch (error) {
-        alert("❌ Error saving entry: " + error.message);
-      }
+      const time = new Date().toLocaleString();
+      document.getElementById("saveTime").textContent = time;
+      document.getElementById("savePopup").style.display = "block";
+      setTimeout(() => {
+        document.getElementById("savePopup").style.display = "none";
+      }, 3000);
     };
 
     window.viewSavedEntries = async function () {
-      const container = document.getElementById("savedEntries");
-      const list = document.getElementById("entriesList");
+      const entriesList = document.getElementById("entriesList");
+      entriesList.innerHTML = "";
 
-      if (container.style.display === "block") {
-        container.style.display = "none";
-        return;
-      }
-
-      list.innerHTML = "";
-
-      const snapshot = await getDocs(collection(db, "pain_entries"));
+      const snapshot = await getDocs(collection(db, "painEntries"));
       snapshot.forEach(docSnap => {
-        const data = docSnap.data();
         const li = document.createElement("li");
         li.innerHTML = `
-          <span>${data.text} <br><small>${data.localTime}</small></span>
+          ${docSnap.data().content}
           <button class="delete-button" onclick="deleteEntry('${docSnap.id}')">Delete</button>
         `;
-        list.appendChild(li);
+        entriesList.appendChild(li);
       });
 
-      container.style.display = "block";
+      document.getElementById("savedEntries").style.display = "block";
     };
 
     window.deleteEntry = async function (id) {
-      if (!confirm("Are you sure you want to delete this entry?")) return;
-
-      try {
-        await deleteDoc(doc(db, "pain_entries", id));
-        viewSavedEntries(); // Refresh list
-      } catch (error) {
-        alert("❌ Error deleting entry: " + error.message);
-      }
+      await deleteDoc(doc(db, "painEntries", id));
+      viewSavedEntries();
     };
 
+    // 👇👇 ADDED VOICE INPUT SCRIPT HERE 👇👇
     window.startVoice = function () {
-      alert("🎤 Voice input not yet implemented.");
+      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      recognition.lang = "en-US";
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.onresult = (event) => {
+        const voiceInput = event.results[0][0].transcript.trim().toLowerCase();
+        const matches = Object.keys(bodyPartDetails).filter(part =>
+          voiceInput.includes(part.toLowerCase())
+        );
+        if (matches.length > 0) {
+          showInfo(matches[0]);
+        } else {
+          speak("I couldn't recognize the body part. Please try again.");
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error", event.error);
+        speak("There was an error with voice input.");
+      };
+
+      recognition.start();
     };
+    // 👆👆 END OF VOICE INPUT SCRIPT 👆👆
   </script>
 </body>
 </html>
