@@ -1,37 +1,48 @@
-<!<!DOCTYPE html>
-<html>  
-<head>  
-  <title>Health Assistant</title>  
-  <link rel="stylesheet" href="style.css">  
-</head>  
-<body>  
-  <div class="box">  
-    <div class="title">  
-      ╔══════════════════════════╗<br>  
-      ║&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;║<br>  
-      ╚══════════════════════════╝  
-    </div>  
+<!DOCTYP<!DOCTYPE html>
+<html>
+<head>
+  <title>Health Assistant</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="box">
+    <div class="title">
+      ╔══════════════════════════╗<br>
+      ║&nbsp;&nbsp;HEALTH ASSISTANT&nbsp;&nbsp;║<br>
+      ╚══════════════════════════╝
+    </div>
 
-    <div class="button-container">  
-      <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>  
-      <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>  
+    <div class="button-container">
+      <button class="btn" onclick="goTo('boy')">👦 FOR BOYS</button>
+      <button class="btn" onclick="goTo('girl')">👧 FOR GIRLS</button>
       <button class="btn" onclick="showSettings()">⚙️ SETTINGS</button>
-    </div>  
+    </div>
 
-    <div class="motivation">  
-      <p>"HOW ARE YOU FEELING TODAY?"</p>  
-      <p>"A healthy you is a powerful you."</p>  
-      <p>"Let’s track how you feel."</p>  
-    </div>  
-  </div>  
+    <div class="motivation">
+      <p>"HOW ARE YOU FEELING TODAY?"</p>
+      <p>"A healthy you is a powerful you."</p>
+      <p>"Let’s track how you feel."</p>
+    </div>
+  </div>
 
-  <!-- Hidden Developer Settings Box -->
+  <!-- Hidden Password Box -->
   <div class="info-box" id="settingsBox" style="display: none;">
     <h2>⚠️ Developer Access Only</h2>
     <p>This settings button is only used by the developer.<br>Enter the password to continue:</p>
     <input type="password" id="devPass" placeholder="Enter password">
     <br>
-    <button onclick="checkPassword()">Submit</button>
+    <button class="btn" onclick="checkPassword()">Submit</button>
+  </div>
+
+  <!-- Hidden Developer Panel -->
+  <div class="dev-panel" id="devPanel" style="display: none;">
+    <h3>🛠 Developer Control Panel</h3>
+    <button class="btn">🔄 Update NeoMind_AI</button>
+    <button class="btn">☁️ Backup System Logs</button>
+    <button class="btn">📁 View Encrypted Logs</button>
+    <button class="btn">📶 Device Sync</button>
+    <br><br>
+    <button class="btn" onclick="hideDevPanel()">❌ Close Settings</button>
   </div>
 
   <script>
@@ -51,12 +62,16 @@
       const input = document.getElementById("devPass").value;
       const correct = "1234"; // Change this to your real password
       if (input === correct) {
-        alert("Access granted!");
-        // Optional: window.location.href = "developer-panel.html";
+        document.getElementById("settingsBox").style.display = "none";
+        document.getElementById("devPanel").style.display = "block";
       } else {
         alert("Access denied.");
       }
     }
-  </script>  
-</body>  
-</html>￼Enter
+
+    function hideDevPanel() {
+      document.getElementById("devPanel").style.display = "none";
+    }
+  </script>
+</body>
+</html>
