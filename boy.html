@@ -3,14 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
-  <style>
-    /* [Styles unchanged] */
+    <style>
+    /* Styling code remains unchanged */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
       background-color: #f0f0f0;
       height: 90vh;
       overflow: hidden;
+      position: relative;
     }
     .main-wrapper {
       position: relative;
@@ -39,16 +40,18 @@
       z-index: 2;
     }
     .part-buttons button {
-      padding: 20px 30px;
-      margin: 10px;
-      font-size: 20px;
+      padding: 26px 40px;
+      margin: 12px;
+      font-size: 24px;
       border: none;
       border-radius: 10px;
       background-color: #007bff;
       color: white;
       cursor: pointer;
     }
-    .part-buttons button:hover { background-color: #0056b3; }
+    .part-buttons button:hover {
+      background-color: #0056b3;
+    }
     .info-box {
       position: absolute;
       bottom: 160px;
@@ -56,15 +59,15 @@
       transform: translateX(-50%);
       z-index: 3;
       background-color: #ffffff;
-      font-size: 18px;
-      padding: 20px;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 25px;
       border-radius: 12px;
+      text-align: center;
       max-width: 95%;
       width: 95%;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      line-height: 1.6;
     }
-    .info-box strong { display: block; margin-top: 10px; }
     .button-container {
       position: absolute;
       bottom: 20px;
@@ -75,31 +78,51 @@
       gap: 20px;
     }
     .button-container button {
-      padding: 20px 40px;
-      font-size: 20px;
+      padding: 24px 60px;
+      font-size: 24px;
       font-weight: bold;
       border: none;
       border-radius: 10px;
       background-color: #28a745;
       color: white;
       cursor: pointer;
+      min-width: 160px;
     }
-    .button-container button:hover { background-color: #1e7e34; }
-    .voice-button, .view-button {
+    .button-container button:hover {
+      background-color: #1e7e34;
+    }
+    .voice-button {
       position: absolute;
       top: 20px;
+      right: 20px;
       z-index: 3;
-      padding: 14px 20px;
-      font-size: 18px;
+      padding: 16px 24px;
+      font-size: 20px;
+      background-color: #673ab7;
+      color: white;
       border: none;
       border-radius: 8px;
-      color: white;
       cursor: pointer;
     }
-    .voice-button { right: 20px; background-color: #673ab7; }
-    .voice-button:hover { background-color: #512da8; }
-    .view-button { left: 20px; background-color: #ff4b69; }
-    .view-button:hover { background-color: #ff2e52; }
+    .voice-button:hover {
+      background-color: #512da8;
+    }
+    .view-button {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 3;
+      padding: 16px 24px;
+      font-size: 20px;
+      background-color: #ff4b69;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .view-button:hover {
+      background-color: #ff2e52;
+    }
     #savePopup {
       position: fixed;
       bottom: 100px;
@@ -124,35 +147,15 @@
       z-index: 4;
       background-color: #ffffff;
       font-size: 18px;
+      font-weight: bold;
       padding: 15px;
       border-radius: 8px;
       max-width: 90%;
-      max-height: 50%;
-      overflow-y: auto;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       display: none;
     }
-    #savedEntries ul { list-style: none; padding: 0; }
-    #savedEntries li {
-      margin-bottom: 12px;
-      background: #f8f9fa;
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .delete-button {
-      background: #dc3545;
-      border: none;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .delete-button:hover { background: #c82333; }
   </style>
-</head>
+  </head>
 <body>
   <div class="main-wrapper">
     <img src="boy.png" alt="Body Diagram" class="body-image">
