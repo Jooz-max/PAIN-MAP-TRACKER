@@ -291,33 +291,39 @@
       viewSavedEntries();
     };
 
-    // 👇👇 ADDED VOICE INPUT SCRIPT HERE 👇👇
+    // ✅ Voice input function
     window.startVoice = function () {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+      if (!('webkitSpeechRecognition' in window)) {
+        alert("Your browser doesn't support speech recognition.");
+        return;
+      }
+
+      const recognition = new webkitSpeechRecognition();
       recognition.lang = "en-US";
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
 
-      recognition.onresult = (event) => {
-        const voiceInput = event.results[0][0].transcript.trim().toLowerCase();
-        const matches = Object.keys(bodyPartDetails).filter(part =>
-          voiceInput.includes(part.toLowerCase())
-        );
-        if (matches.length > 0) {
-          showInfo(matches[0]);
-        } else {
-          speak("I couldn't recognize the body part. Please try again.");
-        }
-      };
-
-      recognition.onerror = (event) => {
-        console.error("Speech recognition error", event.error);
-        speak("There was an error with voice input.");
-      };
-
       recognition.start();
+
+      recognition.onresult = function (event) {
+        const speechResult = event.results[0][0].transcript.toLowerCase();
+        console.log("Voice Input:", speechResult);
+
+        if (speechResult.includes("head")) showInfo("Head");
+        else if (speechResult.includes("neck")) showInfo("Neck");
+        else if (speechResult.includes("torso") || speechResult.includes("chest") || speechResult.includes("lungs")) showInfo("Torso");
+        else if (speechResult.includes("left arm")) showInfo("Left Arm");
+        else if (speechResult.includes("right arm")) showInfo("Right Arm");
+        else if (speechResult.includes("left leg")) showInfo("Left Leg");
+        else if (speechResult.includes("right leg")) showInfo("Right Leg");
+        else if (speechResult.includes("reproductive") || speechResult.includes("private")) showInfo("Reproductive");
+        else speak("I didn't catch a valid body part. Please try again.");
+      };
+
+      recognition.onerror = function (event) {
+        speak("Error recognizing speech: " + event.error);
+      };
     };
-    // 👆👆 END OF VOICE INPUT SCRIPT 👆👆
   </script>
 </body>
 </html>
