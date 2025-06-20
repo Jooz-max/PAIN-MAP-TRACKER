@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
-  <style
+  <style>
+    /* Your original CSS styles unchanged */
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
@@ -152,6 +152,8 @@
       max-width: 90%;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
       display: none;
+      max-height: 50vh;
+      overflow-y: auto;
     }
     .delete-button {
       margin-top: 10px;
@@ -205,198 +207,263 @@
       text-decoration: underline;
     }
     .hidden { display: none; }
-  
-   </style>
+  </style>
 </head>
 <body>
   <div class="main-wrapper">
-    <img src="boy.png" alt="Body Diagram" class="body-image">
+    <img src="boy.png" alt="Body Diagram" class="body-image"><div id="authSection" class="auth-box">
+  <h2 id="authTitle">Login</h2>
+  <input type="email" id="email" placeholder="Email" />
+  <input type="password" id="password" placeholder="Password" />
+  <button onclick="handleAuth()">Login</button>
+  <div class="auth-toggle" onclick="toggleAuthMode()">Don't have an account? Sign up</div>
+</div>
 
-    <div id="authSection" class="auth-box">
-      <h2 id="authTitle">Login</h2>
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
-      <button onclick="handleAuth()">Login</button>
-      <div class="auth-toggle" onclick="toggleAuthMode()">Don't have an account? Sign up</div>
-    </div>
-
-    <div id="appContent" class="hidden">
-      <div class="part-buttons">
-        <button onclick="showInfo('Head')">Head</button>
-        <button onclick="showInfo('Neck')">Neck</button>
-        <button onclick="showInfo('Torso')">Respiratory</button>
-        <button onclick="showInfo('Left Arm')">Left Arm</button>
-        <button onclick="showInfo('Right Arm')">Right Arm</button>
-        <button onclick="showInfo('Left Leg')">Left Leg</button>
-        <button onclick="showInfo('Right Leg')">Right Leg</button>
-        <button onclick="showInfo('Reproductive')">Reproductive Area</button>
-      </div>
-
-      <div id="infoBox" class="info-box"></div>
-      <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
-
-      <div class="button-container">
-        <button onclick="saveEntry()">Save Entry</button>
-        <button onclick="history.back()">Back</button>
-      </div>
-
-      <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
-      <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
-      <div id="savedEntries">
-        <h3>Saved Entries:</h3>
-        <ul id="entriesList"></ul>
-      </div>
-    </div>
+<div id="appContent" class="hidden">
+  <div class="part-buttons">
+    <button onclick="showInfo('Head')">Head</button>
+    <button onclick="showInfo('Neck')">Neck</button>
+    <button onclick="showInfo('Torso')">Respiratory</button>
+    <button onclick="showInfo('Left Arm')">Left Arm</button>
+    <button onclick="showInfo('Right Arm')">Right Arm</button>
+    <button onclick="showInfo('Left Leg')">Left Leg</button>
+    <button onclick="showInfo('Right Leg')">Right Leg</button>
+    <button onclick="showInfo('Reproductive')">Reproductive Area</button>
   </div>
 
-  <script type="module">
+  <div id="infoBox" class="info-box"></div>
+  <button class="voice-button" onclick="startVoice()">🎤 Voice Input</button>
+
+  <div class="button-container">
+    <button onclick="saveEntry()">Save Entry</button>
+    <button onclick="history.back()">Back</button>
+  </div>
+
+  <button class="view-button" onclick="viewSavedEntries()">View Saved Entries</button>
+  <div id="savePopup">💾 Entry saved on <span id="saveTime"></span></div>
+  <div id="savedEntries">
+    <h3>Saved Entries:</h3>
+    <ul id="entriesList"></ul>
+  </div>
+</div>
+
+  </div>  <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import {
-      getFirestore, collection, addDoc, getDocs, deleteDoc, doc, serverTimestamp, query, where
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      deleteDoc,
+      doc,
+      serverTimestamp,
+      query,
+      where,
+      orderBy
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
     import {
-      getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signOut,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
+    // Your Firebase config here
     const firebaseConfig = {
-      apiKey: "AIzaSyBzFJ1ANRkqTlVSav6pLH2hzQ-I3uGWOFc",
-      authDomain: "pain-map-tracker.firebaseapp.com",
-      projectId: "pain-map-tracker",
-      storageBucket: "pain-map-tracker.appspot.com",
-      messagingSenderId: "1033877333158",
-      appId: "1:1033877333158:web:your_app_id"
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
     };
 
+    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
-    const auth = getAuth();
+    const auth = getAuth(app);
 
+    // DOM elements
+    const authSection = document.getElementById('authSection');
+    const appContent = document.getElementById('appContent');
+    const authTitle = document.getElementById('authTitle');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const authToggle = document.querySelector('.auth-toggle');
+    const infoBox = document.getElementById('infoBox');
+    const savePopup = document.getElementById('savePopup');
+    const saveTimeSpan = document.getElementById('saveTime');
+    const savedEntries = document.getElementById('savedEntries');
+    const entriesList = document.getElementById('entriesList');
+
+    let isLoginMode = true;
     let currentUser = null;
+    let currentSelection = '';
 
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        currentUser = user;
-        document.getElementById('authSection').classList.add('hidden');
-        document.getElementById('appContent').classList.remove('hidden');
-      } else {
-        currentUser = null;
-        document.getElementById('authSection').classList.remove('hidden');
-        document.getElementById('appContent').classList.add('hidden');
+    function toggleAuthMode() {
+      isLoginMode = !isLoginMode;
+      authTitle.textContent = isLoginMode ? 'Login' : 'Sign Up';
+      authToggle.textContent = isLoginMode
+        ? "Don't have an account? Sign up"
+        : "Already have an account? Login";
+    }
+
+    async function handleAuth() {
+      const email = emailInput.value.trim();
+      const password = passwordInput.value.trim();
+      if (!email || !password) {
+        alert('Please enter email and password');
+        return;
       }
-    });
-
-    window.handleAuth = async function () {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      const isLogin = document.getElementById('authTitle').innerText === 'Login';
 
       try {
-        if (isLogin) {
-          await signInWithEmailAndPassword(auth, email, password);
+        if (isLoginMode) {
+          // Login
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          currentUser = userCredential.user;
+          onUserLoggedIn();
         } else {
-          await createUserWithEmailAndPassword(auth, email, password);
+          // Sign Up
+          const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+          currentUser = userCredential.user;
+          alert('Account created! You are now logged in.');
+          onUserLoggedIn();
         }
       } catch (error) {
         alert(error.message);
       }
-    };
+    }
 
-    window.toggleAuthMode = function () {
-      const title = document.getElementById('authTitle');
-      const toggle = document.querySelector('.auth-toggle');
-      if (title.innerText === 'Login') {
-        title.innerText = 'Sign Up';
-        toggle.innerText = 'Already have an account? Login';
-      } else {
-        title.innerText = 'Login';
-        toggle.innerText = "Don't have an account? Sign up";
+    function onUserLoggedIn() {
+      authSection.classList.add('hidden');
+      appContent.classList.remove('hidden');
+      emailInput.value = '';
+      passwordInput.value = '';
+      loadSavedEntries();
+    }
+
+    function showInfo(part) {
+      currentSelection = part;
+      infoBox.textContent = `Selected part: ${part}. Please describe your pain or notes here.`;
+    }
+
+    async function saveEntry() {
+      if (!currentUser) {
+        alert('You must be logged in to save entries.');
+        return;
       }
-    };
+      if (!currentSelection) {
+        alert('Please select a body part first.');
+        return;
+      }
 
-    window.showInfo = function (part) {
-      const suggestions = {
-        "Head": "Consider rest, hydration, or a painkiller. If the pain is intense or lasts long, consult a doctor.",
-        "Neck": "Try applying a warm compress. Avoid sudden movements. Seek medical help if it’s stiff or radiates.",
-        "Torso": "Breathe slowly and monitor symptoms. It may relate to lungs or heart. Seek help if severe.",
-        "Left Arm": "Avoid lifting. If tingling or numbness occurs, consult a doctor—especially with chest pain.",
-        "Right Arm": "Apply ice if swelling. Gentle massage may help. Avoid repetitive use.",
-        "Left Leg": "Rest and elevate your leg. If swelling or sharp pain occurs, monitor closely.",
-        "Right Leg": "Apply cold compress. Avoid walking long distances. Seek help if persistent.",
-        "Reproductive": "Maintain hygiene and avoid pressure. If pain continues or worsens, see a specialist."
-      };
-      document.getElementById('infoBox').innerText = `Pain reported in: ${part}\nSuggestion: ${suggestions[part] || "No suggestion available."}`;
-    };
+      // For simplicity, let's get pain info from the infoBox text or prompt user to add details
+      let painDetails = prompt(`Enter pain details for ${currentSelection}:`, '');
 
-    window.saveEntry = async function () {
-      const partInfo = document.getElementById('infoBox').innerText;
-      if (!partInfo || !currentUser) return alert("Please select a part and login first.");
+      if (painDetails === null || painDetails.trim() === '') {
+        alert('No pain details entered, entry not saved.');
+        return;
+      }
 
       try {
-        await addDoc(collection(db, "entries"), {
+        await addDoc(collection(db, "painEntries"), {
           userId: currentUser.uid,
-          part: partInfo,
-          timestamp: serverTimestamp()
+          bodyPart: currentSelection,
+          details: painDetails,
+          createdAt: serverTimestamp()
         });
 
-        const time = new Date().toLocaleTimeString();
-        document.getElementById('saveTime').innerText = time;
-        document.getElementById('savePopup').style.display = 'block';
+        const now = new Date();
+        saveTimeSpan.textContent = now.toLocaleString();
+        savePopup.style.display = 'block';
         setTimeout(() => {
-          document.getElementById('savePopup').style.display = 'none';
-        }, 2000);
-      } catch (error) {
-        alert("Error saving entry: " + error.message);
-      }
-    };
+          savePopup.style.display = 'none';
+        }, 3000);
 
-    window.viewSavedEntries = async function () {
-      const entriesList = document.getElementById('entriesList');
+        loadSavedEntries(); // Refresh list
+      } catch (error) {
+        alert('Error saving entry: ' + error.message);
+      }
+    }
+
+    async function loadSavedEntries() {
+      if (!currentUser) return;
       entriesList.innerHTML = '';
-      if (!currentUser) return alert("Please login to view your entries.");
 
       try {
-        const q = query(collection(db, "entries"), where("userId", "==", currentUser.uid));
-        const snapshot = await getDocs(q);
-        snapshot.forEach(docSnap => {
-          const data = docSnap.data();
-          const li = document.createElement('li');
-          const date = data.timestamp?.toDate().toLocaleString() || "Unknown time";
-          li.innerHTML = `${data.part} - ${date} <button class="delete-button" onclick="deleteEntry('${docSnap.id}')">Delete</button>`;
-          entriesList.appendChild(li);
-        });
+        const q = query(
+          collection(db, "painEntries"),
+          where("userId", "==", currentUser.uid),
+          orderBy("createdAt", "desc")
+        );
 
-        document.getElementById('savedEntries').style.display = 'block';
+        const querySnapshot = await getDocs(q);
+        if (querySnapshot.empty) {
+          entriesList.innerHTML = '<li>No entries found.</li>';
+        } else {
+          querySnapshot.forEach(docSnap => {
+            const data = docSnap.data();
+            const createdAt = data.createdAt ? data.createdAt.toDate().toLocaleString() : 'Unknown time';
+            const li = document.createElement('li');
+            li.innerHTML = `
+              <strong>${data.bodyPart}</strong>: ${data.details} <br/>
+              <em>Saved on: ${createdAt}</em>
+              <br/>
+              <button class="delete-button" onclick="deleteEntry('${docSnap.id}')">Delete</button>
+            `;
+            entriesList.appendChild(li);
+          });
+        }
       } catch (error) {
-        alert("Error fetching entries: " + error.message);
+        alert('Error loading entries: ' + error.message);
       }
-    };
+    }
 
-    window.deleteEntry = async function (entryId) {
+    async function deleteEntry(id) {
+      if (!confirm('Are you sure you want to delete this entry?')) return;
+
       try {
-        await deleteDoc(doc(db, "entries", entryId));
-        viewSavedEntries();
+        await deleteDoc(doc(db, "painEntries", id));
+        loadSavedEntries();
       } catch (error) {
-        alert("Error deleting entry: " + error.message);
+        alert('Error deleting entry: ' + error.message);
       }
-    };
+    }
 
-    window.startVoice = function () {
-      const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-      recognition.lang = "en-US";
-      recognition.onresult = function (event) {
-        const command = event.results[0][0].transcript.toLowerCase();
-        if (command.includes("head")) showInfo("Head");
-        else if (command.includes("neck")) showInfo("Neck");
-        else if (command.includes("torso") || command.includes("chest")) showInfo("Torso");
-        else if (command.includes("left arm")) showInfo("Left Arm");
-        else if (command.includes("right arm")) showInfo("Right Arm");
-        else if (command.includes("left leg")) showInfo("Left Leg");
-        else if (command.includes("right leg")) showInfo("Right Leg");
-        else if (command.includes("private") || command.includes("reproductive")) showInfo("Reproductive");
-        else alert("No matching body part found.");
-      };
-      recognition.start();
-    };
-  </script>
-</body>
+    function viewSavedEntries() {
+      if (savedEntries.style.display === 'block') {
+        savedEntries.style.display = 'none';
+      } else {
+        savedEntries.style.display = 'block';
+        loadSavedEntries();
+      }
+    }
+
+    function startVoice() {
+      alert('Voice input feature is not implemented yet.');
+      // Placeholder for future voice recognition implementation
+    }
+
+    // Listen for auth state changes (keeps user logged in across sessions)
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        currentUser = user;
+        onUserLoggedIn();
+      } else {
+        currentUser = null;
+        authSection.classList.remove('hidden');
+        appContent.classList.add('hidden');
+      }
+    });
+
+    // Expose functions for buttons used inline
+    window.toggleAuthMode = toggleAuthMode;
+    window.handleAuth = handleAuth;
+    window.showInfo = showInfo;
+    window.saveEntry = saveEntry;
+    window.viewSavedEntries = viewSavedEntries;
+    window.deleteEntry = deleteEntry;
+    window.startVoice = startVoice;
+  </script></body>
   </html>
