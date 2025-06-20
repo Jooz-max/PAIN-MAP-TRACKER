@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <title>Pain Map Tracker</title>
   <style>
-    /* Keep all your original styles (unchanged) */
-* { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: sans-serif;
       background-color: #f0f0f0;
@@ -166,8 +165,8 @@
     }
     .delete-button:hover {
       background-color: #c82333;
-  }
-   .auth-box {
+    }
+    .auth-box {
       position: absolute;
       top: 10%;
       left: 50%;
@@ -273,133 +272,88 @@
     const auth = getAuth();
 
     const bodyPartDetails = {
-      "Head": {
-        case: "You reported pain in the head.",
-        advice: "Consider resting, hydrating, and monitoring for symptoms like dizziness or vision changes."
-      },
-      "Neck": {
-        case: "You reported pain in the neck.",
-        advice: "Stretch gently, avoid straining, and apply warm compresses if needed."
-      },
-      "Torso": {
-        case: "You reported respiratory or torso discomfort.",
-        advice: "Breathe slowly, avoid heavy exertion, and consult a professional if pain persists."
-      },
-      "Left Arm": {
-        case: "You reported pain in the left arm.",
-        advice: "Check for any swelling or numbness. If chest pain is present, seek immediate help."
-      },
-      "Right Arm": {
-        case: "You reported pain in the right arm.",
-        advice: "Stretch or rest your arm and apply ice if there is inflammation."
-      },
-      "Left Leg": {
-        case: "You reported pain in the left leg.",
-        advice: "Elevate the leg and avoid standing too long. Monitor for cramps or redness."
-      },
-      "Right Leg": {
-        case: "You reported pain in the right leg.",
-        advice: "Stretch, rest, and hydrate. Apply warm or cold packs as needed."
-      },
-      "Reproductive": {
-        case: "You reported pain in the reproductive area.",
-        advice: "Monitor symptoms closely. Consult a healthcare provider for proper evaluation."
-      }
+      "Head": { case: "You reported pain in the head.", advice: "Rest, hydrate, and monitor symptoms." },
+      "Neck": { case: "You reported pain in the neck.", advice: "Stretch gently and apply warm compress." },
+      "Torso": { case: "You reported respiratory/torso pain.", advice: "Avoid exertion and consult a professional." },
+      "Left Arm": { case: "Pain in the left arm.", advice: "Check for swelling; if chest pain, seek help." },
+      "Right Arm": { case: "Pain in the right arm.", advice: "Rest, stretch, apply ice if inflamed." },
+      "Left Leg": { case: "Pain in the left leg.", advice: "Elevate, avoid long standing, monitor cramps." },
+      "Right Leg": { case: "Pain in the right leg.", advice: "Stretch, rest, hydrate, use warm/cold packs." },
+      "Reproductive": { case: "Pain in the reproductive area.", advice: "Monitor symptoms and seek care if persistent." }
     };
 
-    function speak(text) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      speechSynthesis.speak(utterance);
-    }
-
-    window.showInfo = function (part) {
+    function showInfo(part) {
       const info = bodyPartDetails[part];
-      if (info) {
-        const message = `${info.case} ${info.advice}`;
-        document.getElementById("infoBox").innerHTML =
-          `<strong>${info.case}</strong><br>${info.advice}`;
-        speak(message);
-      }
-    };
-
-    window.saveEntry = async function () {
-      const infoText = document.getElementById("infoBox").innerHTML;
-      if (!infoText.trim()) return;
-
-      await addDoc(collection(db, "painEntries"), {
-        content: infoText,
-        timestamp: serverTimestamp()
-      });
-
-      const time = new Date().toLocaleString();
-      document.getElementById("saveTime").textContent = time;
-      document.getElementById("savePopup").style.display = "block";
-      setTimeout(() => {
-        document.getElementById("savePopup").style.display = "none";
-      }, 3000);
-    };
-
-    window.viewSavedEntries = async function () {
-      const entriesList = document.getElementById("entriesList");
-      entriesList.innerHTML = "";
-
-      const snapshot = await getDocs(collection(db, "painEntries"));
-      snapshot.forEach(docSnap => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-          ${docSnap.data().content}
-          <button class="delete-button" onclick="deleteEntry('${docSnap.id}')">Delete</button>
-        `;
-        entriesList.appendChild(li);
-      });
-
-      document.getElementById("savedEntries").style.display = "block";
-    };
-
-    window.deleteEntry = async function (id) {
-      await deleteDoc(doc(db, "painEntries", id));
-      viewSavedEntries();
-    };
-
-    // Auth logic
-    let isLogin = true;
-
-    window.toggleAuthMode = function () {
-      isLogin = !isLogin;
-      document.getElementById("authTitle").textContent = isLogin ? "Login" : "Sign Up";
-      document.querySelector(".auth-box button").textContent = isLogin ? "Login" : "Sign Up";
-      document.querySelector(".auth-toggle").textContent = isLogin
-        ? "Don't have an account? Sign up"
-        : "Already have an account? Login";
-    };
-
-    window.handleAuth = function () {
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-
-      if (isLogin) {
-        signInWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            showApp();
-          })
-          .catch(err => alert(err.message));
-      } else {
-        createUserWithEmailAndPassword(auth, email, password)
-          .then(() => {
-            showApp();
-          })
-          .catch(err => alert(err.message));
-      }
-    };
-
-    function showApp() {
-      document.getElementById("authSection").classList.add("hidden");
-      document.getElementById("appContent").classList.remove("hidden");
+      document.getElementById("infoBox").innerHTML = `<strong>${info.case}</strong><br>${info.advice}`;
     }
 
-    onAuthStateChanged(auth, (user) => {
-      if (user) showApp();
+    async function saveEntry() {
+      const info = document.getElementById("infoBox").innerText;
+      if (!info) return alert("Please select a body part first.");
+      await addDoc(collection(db, "entries"), { info, timestamp: serverTimestamp() });
+      const now = new Date().toLocaleString();
+      document.getElementById("saveTime").innerText = now;
+      const popup = document.getElementById("savePopup");
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 3000);
+    }
+
+    async function viewSavedEntries() {
+      const list = document.getElementById("entriesList");
+      list.innerHTML = "";
+      const snapshot = await getDocs(collection(db, "entries"));
+      snapshot.forEach(docItem => {
+        const li = document.createElement("li");
+        li.textContent = docItem.data().info;
+        const delBtn = document.createElement("button");
+        delBtn.textContent = "Delete";
+        delBtn.className = "delete-button";
+        delBtn.onclick = async () => {
+          await deleteDoc(doc(db, "entries", docItem.id));
+          li.remove();
+        };
+        li.appendChild(delBtn);
+        list.appendChild(li);
+      });
+      document.getElementById("savedEntries").style.display = "block";
+    }
+
+    function toggleAuthMode() {
+      const title = document.getElementById("authTitle");
+      const button = document.querySelector(".auth-box button");
+      const toggle = document.querySelector(".auth-toggle");
+      if (title.textContent === "Login") {
+        title.textContent = "Sign Up";
+        button.textContent = "Sign Up";
+        toggle.textContent = "Already have an account? Login";
+      } else {
+        title.textContent = "Login";
+        button.textContent = "Login";
+        toggle.textContent = "Don't have an account? Sign up";
+      }
+    }
+
+    function handleAuth() {
+      const email = document.getElementById("email").value;
+      const pass = document.getElementById("password").value;
+      const isLogin = document.getElementById("authTitle").textContent === "Login";
+      if (isLogin) {
+        signInWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+      } else {
+        createUserWithEmailAndPassword(auth, email, pass).catch(err => alert(err.message));
+      }
+    }
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        document.getElementById("authSection").classList.add("hidden");
+        document.getElementById("appContent").classList.remove("hidden");
+      }
     });
+
+    function startVoice() {
+      alert("Voice input coming soon...");
+    }
   </script>
 </body>
-        </html>
+  </html>
